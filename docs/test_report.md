@@ -1,3 +1,10 @@
+# Test Report
+
+> **Historical record below.** It was captured before the release-readiness pass.
+> Current validation on 2026-11-16: **45 passed, 5 deselected** for the fast suite and
+> **50 passed** for the full suite using `/Users/saiuppalapati/miniforge3/bin/python3`.
+> The full suite now includes concrete PyBullet physics and robot-interface tests.
+
 ============================= test session starts ==============================
 platform darwin -- Python 3.12.12, pytest-9.1.1, pluggy-1.6.0 -- /Users/saiuppalapati/miniforge3/bin/python3
 cachedir: .pytest_cache

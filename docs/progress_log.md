@@ -1,5 +1,9 @@
 # Progress Log
 
+> **Historical-results notice:** Phase 0–2 result values below were produced before the
+> front-marker mass correction recorded in the current Phase 3 release-readiness section.
+> Treat the regenerated `results/` evidence and `report/report.md` as authoritative.
+
 ## Phase 0 — Repository Scaffold (2026-11-16) ✅
 
 ### Completed
@@ -166,3 +170,32 @@ Existing Phase 2 CSVs and JSON sidecars were deliberately retained unchanged as 
 - Replace report front-matter and syllabus placeholders.
 - Verify bibliography entries marked `[VERIFY]` and replace the placeholder recent-paper reference.
 - Produce and visually inspect the final formatted DOCX/PDF against `report/format_checklist.md`.
+
+---
+
+## Phase 3 — Release-Readiness Validation (2026-11-16) ✅
+
+### Completed
+- Fixed the E04 comparison CLI: it now loads all required configurations and applies the supplied duration and seed.
+- Made the all-experiments CLI return a non-zero exit status if any selected experiment fails.
+- Made `run_simulation.py --config-dir` a real configuration override, replacing the previously ignored option.
+- Restricted the legacy figure generator to raw telemetry in `results/data/`, so generated summary tables cannot be mistaken for time-series input. `make plots` now invokes the canonical Phase 3 evidence generator.
+- Replaced placeholder physics and robot tests with real headless PyBullet checks for world setup, URDF joint discovery, torque saturation, stepping, and reset.
+- Aligned the declared PyBullet minimum version with the validated installed 3.2.5 build and added a root README with reproducible setup, verification, and run commands.
+- Corrected the URDF front marker from PyBullet's unintended 1 kg default to an explicit 0 kg visual-only link. The measured total robot mass is now 2.5 kg, matching the model and configuration.
+- Reran E01–E06 and regenerated all report tables and figures using the corrected plant. Both controllers now succeed at every tested initial tilt through 30°; prior 12° PID-limit claims are historical results from the incorrect 3.5 kg plant and must not be reused.
+
+### Validation
+- Fast suite: **45 passed, 5 deselected**.
+- Full suite: **50 passed**.
+- Headless LQR smoke run, E04 comparison CLI, raw-data figure generation, and Phase 3 table/figure generation all completed successfully using temporary output directories.
+
+### Remaining for formal submission
+- Replace report front matter/syllabus placeholders and verify the marked bibliography items.
+- Produce and visually inspect the final formatted DOCX/PDF against `report/format_checklist.md`.
+
+### Faculty format and allocation received
+- Faculty documents identify this work as **P09, G01, Batch B1**: *Self-Balancing Two-Wheel Robot (Inverted Pendulum)*.
+- The final report must follow the supplied sample on A4 paper with a page border, Times New Roman 12 pt body text, 1.5 line spacing, mandatory front matter, indexed figures/tables, and 25–35 total pages.
+- Mandatory report content includes Novelty, Contribution, individual Co-learning Reflections, at least eight IEEE references, meeting log, peer-assessment sheets, GitHub link, and unlisted YouTube video link.
+- The faculty deadline stated in the instruction sheet is 29 October 2026. The report draft will be rebuilt from the sample template once the group provides its contribution, writing-allocation, meeting, reflection, peer-assessment, and video details.

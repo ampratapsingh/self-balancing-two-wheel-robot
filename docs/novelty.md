@@ -25,7 +25,7 @@ Experiments E02 (PID nominal), E03 (LQR nominal), E04 (head-to-head comparison a
 **Supporting results:**
 - Table: `results/tables/E04_comparison_table.csv`
 - Figure: `report/figures/E04_tilt.png` (matched 10° comparison)
-- Result: PID fails at 15° after 9.650772 s; LQR completes the 15° run.
+- Result: both PID and LQR complete the 15° run; PID settles faster while LQR has lower final displacement.
 
 **Limitations:**
 - Comparison is in simulation only; real hardware would show additional differences due to sensor noise, motor dynamics, and actuation delays.
@@ -47,7 +47,7 @@ Experiment E06: 12 tilt angles × 2 controllers = 24 runs.
 **Supporting results:**
 - Figure: `report/figures/E06_tilt.png`
 - Table: `results/tables/E06_tilt_sweep.csv`
-- Result: PID succeeds through 12° and fails from 15° onward; LQR succeeds at every tested angle through 30°.
+- Result: both PID and LQR succeed at every tested angle through 30°; their upper robustness limits remain unmeasured.
 
 **Limitations:**
 - 2D sweep only (no initial velocity or position offset).
@@ -103,7 +103,7 @@ Experiments E02 and E03 (30s runs): `x_m` column in CSVs.
 **Supporting results:**
 - Figure: `report/figures/E02_E03_position_drift.png`
 - Metrics: `results/tables/E02_E03_nominal_comparison.csv`
-- Result: nominal PID final position is 75.630257 m versus 1.360425 m for LQR.
+- Result: nominal PID final position is 0.018531 m versus 0.008544 m for LQR.
 
 **Limitations:**
 - LQR position regulation is linear and may not hold for large deviations.

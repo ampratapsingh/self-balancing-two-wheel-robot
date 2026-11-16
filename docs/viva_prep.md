@@ -32,7 +32,7 @@ where M_eff = M_total + 2I_w/r², I_pend = I_c + m_c·l², and τ is total wheel
 
 **Q4: How valid is the linear model?**
 
-**A:** Valid for small tilt angles (roughly |θ| < 15° based on our experiments). Beyond that, sin(θ)≈θ breaks down. We verified this by comparing the linear model's response with PyBullet: for 3° initial tilt, the responses match well initially but diverge as the robot moves and nonlinear effects accumulate. See Experiment E10 (optional) in `docs/mathematical_model.md` Section 6.
+**A:** Valid locally around the upright equilibrium. Beyond small angles, sin(θ)≈θ becomes less accurate. The simulation demonstrates successful nonlinear recovery through 30° for the selected controllers, but that empirical result does not extend the formal local guarantee of the linear model. See Experiment E10 (optional) in `docs/mathematical_model.md` Section 6.
 
 ---
 
@@ -86,7 +86,7 @@ Together they form a 4D state space for a system with 2 degrees of freedom (x an
 2. Added Kd for damping: Kd ≈ K_cr · T_osc / 8π (Ziegler–Nichols inspired).
 3. Added small Ki (0.5) to remove steady-state offset.
 4. Grid search over Kp and Kd scored by ITAE; results in `results/tables/pid_tuning.csv`.
-Final gains: Kp=35, Ki=0.5, Kd=2.5. These were validated on a different initial condition than used for tuning.
+Final gains: Kp=130, Ki=0.3, Kd=8.0. These were validated across the nominal, disturbance, comparison, and initial-tilt sweep experiments.
 
 ---
 
@@ -153,11 +153,11 @@ Final gains: Kp=35, Ki=0.5, Kd=2.5. These were validated on a different initial 
 **Q21: What experiments did you run and what do they prove?**
 
 **A:** 
-- E01: Uncontrolled fall — confirms the robot is unstable without control (falls in ~1.2s from 2°).
+- E01: Uncontrolled fall — confirms the robot is unstable without control (falls in ~0.54s from 2°).
 - E02/E03: PID/LQR nominal balancing — both controllers achieve >20s balance from 3°.
-- E04: Head-to-head comparison — LQR shows faster settling and less drift; PID has comparable torque.
+- E04: Head-to-head comparison — PID settles faster in tilt; LQR has lower final position displacement and reaches the torque limit.
 - E05: Disturbance response — both controllers recover from 10N impulse; LQR recovers faster.
-- E06: Tilt sweep — determines failure boundary (e.g., PID fails beyond ~20°, LQR fails beyond ~25°).
+- E06: Tilt sweep — both controllers succeed through the largest tested 30° tilt, so their failure boundaries require a larger sweep.
 
 ---
 

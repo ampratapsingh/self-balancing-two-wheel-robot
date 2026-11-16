@@ -21,7 +21,7 @@ def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     logger = logging.getLogger(__name__)
 
-    # Runs experiment E04: PID vs LQR at multiple initial tilts
+    # Runs experiment E04: PID vs LQR at multiple initial tilts.
     try:
         from balancing_robot.experiments.comparison import run_comparison
     except ImportError as e:
@@ -29,8 +29,27 @@ def main():
         logger.error("Run after Phase 2 implementation is complete.")
         sys.exit(1)
 
+    from balancing_robot.config import (
+        load_experiment_config,
+        load_lqr_config,
+        load_pid_config,
+        load_robot_config,
+        load_simulation_config,
+    )
+
+    exp_cfg = load_experiment_config("e04_comparison").copy()
+    exp_cfg["duration_s"] = args.duration
+    exp_cfg["seed"] = args.seed
+
     logger.info("Running E04: PID vs LQR comparison ...")
-    run_comparison(output_dir=Path(args.output_dir), duration_s=args.duration, seed=args.seed)
+    run_comparison(
+        robot_cfg=load_robot_config(),
+        sim_cfg=load_simulation_config(),
+        pid_cfg=load_pid_config(),
+        lqr_cfg=load_lqr_config(),
+        exp_cfg=exp_cfg,
+        output_dir=Path(args.output_dir),
+    )
     logger.info("E04 complete. Results in %s", args.output_dir)
 
 

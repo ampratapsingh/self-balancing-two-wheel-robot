@@ -21,6 +21,23 @@
 | **Simulator** | PyBullet |
 | **Controllers** | PID and LQR (inverted pendulum) |
 
+### Faculty submission details
+
+| Field | Value |
+|---|---|
+| **Project number** | P09 |
+| **Group** | G01 |
+| **Batch** | B1 |
+| **Faculty project title** | Self-Balancing Two-Wheel Robot (Inverted Pendulum) |
+| **Submission deadline** | 29 October 2026 |
+| **Group members** | Abhishek Yadav (500124289); Kanika Chaudhary (500119608); Amit Singh (500126595); Leela Venkata Sai Uppalapati (500124909); Siddhant (500123846) |
+
+The faculty instructions require an A4, 25–35 page report following the supplied sample: the
+sample title page, a page border on every page, Times New Roman (12 pt body with 1.5 spacing),
+front matter, mandatory Novelty and Contribution sections, at least eight IEEE references,
+individual co-learning reflections, meeting log, and peer-assessment sheets. Use the faculty PDF
+and sample report as the authority for formatting and submission content.
+
 ### Goal
 Simulate a two-wheeled self-balancing robot in PyBullet, implement PID and LQR controllers,
 run 6 experiments (E01–E06), generate plots, and produce a university report.
@@ -46,7 +63,7 @@ cd "/Users/saiuppalapati/Downloads/Robotics Project"
 # OR:
 /Users/saiuppalapati/miniforge3/bin/pip install pybullet
 
-# Run fast tests (47 pass, 3 deselected as @slow):
+# Run fast tests (45 pass, 5 deselected as @slow):
 /Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -v
 
 # Run all tests including integration (50 pass; needs pybullet):
@@ -78,7 +95,7 @@ Robotics Project/
 ├── config/
 │   ├── robot_config.yaml            # wheel r=0.08, chassis mass=2.0, etc.
 │   ├── simulation_config.yaml       # dt=1/240, gravity=-9.81, fall_threshold=45°
-│   ├── pid_config.yaml              # Kp=35, Ki=0.5, Kd=2.5
+│   ├── pid_config.yaml              # Kp=130, Ki=0.3, Kd=8.0
 │   ├── lqr_config.yaml              # Q diagonal, R=0.1
 │   └── experiments/
 │       ├── e01_uncontrolled.yaml    # 5s free fall from 2°
@@ -259,20 +276,24 @@ max_torque_total: 10.0
 
 **pybullet:** Installed via `conda install -c conda-forge pybullet` ✅
 
+> **Historical-results notice:** the original Phase 2 result values below were generated before
+> the front-marker mass correction. The current regenerated `results/` files and `report/report.md`
+> are authoritative for all measurements and conclusions.
+
 **PID gains (tuned):** `Kp=130.0, Ki=0.3, Kd=8.0` — in `config/pid_config.yaml`
 
-**All 6 experiments ran headlessly and produced CSVs:**
+**All 6 experiments were rerun headlessly against the corrected 2.5 kg URDF and produced CSVs:**
 
 | Exp | Name | Result |
 |---|---|---|
-| E01 | Uncontrolled fall | Fell at **1.11s** ✅ |
+| E01 | Uncontrolled fall | Fell at **0.54s** ✅ |
 | E02 | PID balancing 30s | **Success=True** ✅ |
 | E03 | LQR balancing 30s | **Success=True** ✅ |
-| E04 | PID vs LQR comparison (2°,5°,10°,15°) | PID fails at 15°; LQR succeeds at all ✅ |
+| E04 | PID vs LQR comparison (2°,5°,10°,15°) | Both succeed at all tested tilts ✅ |
 | E05 | Disturbance response (10N at t=5s) | Both PID and LQR survive ✅ |
-| E06 | Tilt sweep (1°–30°) | PID max: **12°**; LQR max: **30°** ✅ |
+| E06 | Tilt sweep (1°–30°) | Both succeed through **30°** ✅ |
 
-**E06 key finding:** PID basin of attraction ≈12°; LQR robustly handles up to 30° (nonlinearity limit not hit).
+**E06 key finding:** Both controllers have a measured basin of attraction of at least 30°; neither upper limit was tested.
 
 **Report figures:** 12 PNG plots generated in `report/figures/` (tilt + torque for each E01–E06) ✅
 
@@ -307,7 +328,7 @@ max_torque_total: 10.0
 
 1. **Read this file** (`docs/context.md`) in full.
 2. Run `git log --oneline` and `git status --short --branch` to see latest commits, tags, and upstream status.
-3. Run `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -v` — should be **47 passed**.
+3. Run `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -v` — should be **45 passed, 5 deselected**. Run the full suite for all **50 passed** checks.
 4. All 6 experiments already ran — results in `results/data/E01/` through `results/data/E06/`
 5. Report figures already in `report/figures/` (12 PNGs)
 6. Continue Phase 3: complete submission placeholders, create the final formatted document, and perform the PDF checklist inspection.
@@ -318,12 +339,11 @@ max_torque_total: 10.0
 
 | Issue | Detail | Status |
 |---|---|---|
-| PID basin of attraction | Fails ≥15° initial tilt with Kp=130 | Expected — nonlinear regime |
-| LQR position drift | Robot slowly rolls away (q_x=1 helps but doesn't fully stop) | Acceptable for balancing task |
-| LQR steady-state tilt | Current PyBullet LQR runs do not meet the ±0.5° settling criterion despite remaining upright | Report as measured; tune Q/R before claiming better tilt regulation |
+| Robustness limit | Both controllers succeed through the largest tested 30° initial tilt | Extend E06 above 30° before claiming a maximum basin |
+| LQR position/torque trade-off | LQR has lower final displacement but reaches 10 Nm in the tested runs | Tune Q/R only if a different torque/settling trade-off is required |
 | Historical JSON provenance | Phase 2 JSON files were saved before provenance expansion and lack runtime/config snapshots | Preserve as historical evidence; rerun an experiment to create an expanded JSON record |
 | System Python | Use miniforge3 only, not `python3` | Known |
-| front_marker_link inertia | PyBullet warns about no inertial data for this link | Harmless |
+| Faculty submission inputs | Contribution allocation, individual reflections, meeting log, peer sheets, and video link are group-provided facts | Keep explicit fill-in fields until the group supplies them |
 
 ---
 

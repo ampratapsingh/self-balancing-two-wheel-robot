@@ -4,7 +4,7 @@
   "initial_tilt_deg": 15.0,
   "controller": "PID",
   "n_steps": 4799,
-  "fell": true,
+  "fell": false,
   "seed": 42,
   "config_snapshot": {
     "robot": {
@@ -73,9 +73,9 @@
     },
     "disturbance": null
   },
-  "git_commit": "45b42e14f52e1369bfdc78a250039a41dc0843d8",
+  "git_commit": "f6fd785d0e75f183383cc97f55528ba6112abbc6",
   "python_version": "3.12.12",
   "pybullet_version": 202010061,
-  "saved_at": "2026-11-16T19:24:23.140576+05:30",
+  "saved_at": "2026-11-16T19:53:22.717499+05:30",
   "csv_file": "/Users/saiuppalapati/Downloads/Robotics Project/results/data/E04/E04_pid_tilt15deg_seed42.csv"
 }

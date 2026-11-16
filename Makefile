@@ -1,6 +1,8 @@
 .PHONY: setup test experiments plots demo-pid demo-lqr lint clean
 
-PYTHON := python3
+# Override when necessary, for example:
+# make PYTHON=/path/to/python test-all
+PYTHON ?= python3
 SCRIPTS := scripts
 
 setup:
@@ -17,7 +19,7 @@ experiments:
 	$(PYTHON) $(SCRIPTS)/run_experiments.py --all
 
 plots:
-	$(PYTHON) $(SCRIPTS)/make_report_assets.py
+	$(PYTHON) $(SCRIPTS)/generate_phase3_assets.py
 
 demo-pid:
 	$(PYTHON) $(SCRIPTS)/run_simulation.py --controller pid --gui

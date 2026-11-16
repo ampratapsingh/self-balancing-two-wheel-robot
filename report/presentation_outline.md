@@ -76,7 +76,7 @@
 - Eigenvalues of A: [0, 0, +10.97, −10.97]
 - Positive eigenvalue = unstable mode (time constant 91ms)
 - Controllability rank = 4/4 → system IS controllable → control is possible
-- E01 result: uncontrolled robot falls in [X]s from 2° — matches theory
+- E01 result: uncontrolled robot falls in 0.542s from 2° — matches theory
 
 **Speaker:** [STUDENT_NAME_3]  
 **Time:** 1 min  
@@ -86,10 +86,10 @@
 
 ## Slide 7: PID Controller Design
 **Content:**
-- Error: e = θ_ref − θ (θ_ref = 0)
+- Implemented error: e = θ − θ_ref (θ_ref = 0)
 - P: immediate response | D: damps oscillations (on measurement) | I: removes offset
 - Anti-windup, derivative filter
-- Gains: Kp=35, Ki=0.5, Kd=2.5 (from tuning grid search)
+- Gains: Kp=130, Ki=0.3, Kd=8.0 (from tuning sweep)
 
 **Speaker:** [STUDENT_NAME_1]  
 **Time:** 1.5 min  
@@ -127,11 +127,11 @@
 **Content:**
 - Tilt vs time plot (30s run)
 - Key metrics: settling time, RMS tilt, final drift
-- Observation: robot balances but drifts in position
+- Observation: robot balances with low tilt error; report the measured final position displacement
 
 **Speaker:** [STUDENT_NAME_1]  
 **Time:** 1 min  
-**Figure:** `results/plots/fig_02_tilt_pid.png`
+**Figure:** `report/figures/E02_tilt.png`
 
 ---
 
@@ -139,11 +139,11 @@
 **Content:**
 - Tilt vs time plot (30s run)
 - Key metrics comparison vs PID
-- Observation: LQR settles faster, less drift (position regulation built in)
+- Observation: LQR has lower final position displacement; PID settles faster in the nominal run
 
 **Speaker:** [STUDENT_NAME_4]  
 **Time:** 1 min  
-**Figure:** `results/plots/fig_03_tilt_lqr.png`
+**Figure:** `report/figures/E03_tilt.png`
 
 ---
 
@@ -151,23 +151,23 @@
 **Content:**
 - Side-by-side metrics table (all 9 metrics)
 - Overlay tilt plot
-- Key finding: LQR settles [X]% faster; PID has [Y] smaller peak torque
+- Key finding: compare settling time, RMS tilt, final position, and torque directly from the generated E04 table
 
 **Speaker:** [STUDENT_NAME_3]  
 **Time:** 1.5 min  
-**Figure:** `results/plots/fig_05_pid_vs_lqr_overlay.png` + Table 6
+**Figure:** `report/figures/E04_tilt.png` + `results/tables/E04_comparison_table.csv`
 
 ---
 
 ## Slide 13: Disturbance Response (E05) and Tilt Sweep (E06)
 **Content:**
 - E05: 10N impulse at t=5s; both controllers recover
-- E06: success/fail map (shows LQR handles larger initial tilts)
-- Key finding: LQR region of attraction extends to [X]° vs PID's [Y]°
+- E06: initial-tilt success map (both controllers succeed through the tested 30° maximum)
+- Key finding: a higher-range sweep is needed to measure either controller's region boundary
 
 **Speaker:** [STUDENT_NAME_4]  
 **Time:** 1.5 min  
-**Figure:** `results/plots/fig_06_disturbance_recovery.png` + `fig_07_tilt_sweep_map.png`
+**Figure:** `report/figures/E05_tilt.png` + `report/figures/E06_tilt.png`
 
 ---
 
@@ -187,7 +187,7 @@
 
 ## Slide 15: Testing and Validation
 **Content:**
-- 47+ automated pytest tests (unit + integration)
+- 50 automated pytest tests (unit + integration)
 - Key validations: URDF loads, robot falls without control, both controllers balance ≥20s
 - Determinism: same seed → identical CSV (verified)
 - CI: GitHub Actions runs tests on every push
@@ -200,7 +200,7 @@
 
 ## Slide 16: Limitations and Future Work
 **Content:**
-- Limitations: simulation only, linearisation range, no yaw, PID drift, no adaptation
+- Limitations: simulation only, local linearisation, no yaw, finite torque, no adaptation
 - Future work: Kalman filter, real hardware, steering, adaptive control, ML-based controller
 
 **Speaker:** [STUDENT_NAME_3]  
@@ -211,9 +211,9 @@
 
 ## Slide 17: Conclusion
 **Content:**
-- Achieved: PyBullet simulation, URDF, PID + LQR, 5 novelty contributions, 47+ tests
-- Key result: Both controllers achieve ≥20s balance; LQR outperforms PID in [specific metrics]
-- Repository: github.com/[GITHUB_USERNAME]/self-balancing-robot-pybullet
+- Achieved: PyBullet simulation, corrected 2.5 kg URDF, PID + LQR, 5 novelty contributions, 50 tests
+- Key result: both controllers balance through 30°; PID has lower tilt error while LQR has lower final position displacement
+- Repository: github.com/saiuppalapati011/self-balancing-two-wheel-robot
 - Thank you + Questions
 
 **Speaker:** All team members  

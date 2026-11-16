@@ -55,12 +55,13 @@ def main():
         "E03": lambda: run_lqr(robot_cfg, sim_cfg, lqr_cfg, load_experiment_config("e03_lqr_balancing"), out_dir),
         "E04": lambda: run_comparison(robot_cfg, sim_cfg, pid_cfg, lqr_cfg,
                                        load_experiment_config("e04_comparison"), out_dir),
-        "E05": lambda: run_disturbance(robot_cfg, sim_cfg, pid_cfg,
+        "E05": lambda: run_disturbance(robot_cfg, sim_cfg, pid_cfg, lqr_cfg,
                                         load_experiment_config("e05_disturbance"), out_dir),
         "E06": lambda: run_tilt_sweep(robot_cfg, sim_cfg, pid_cfg, lqr_cfg,
                                        load_experiment_config("e06_tilt_sweep"), out_dir),
     }
 
+    failed_experiments = []
     for eid in experiment_ids:
         logger.info("Running experiment %s ...", eid)
         try:
@@ -68,6 +69,11 @@ def main():
             logger.info("Experiment %s complete: %s", eid, result)
         except Exception as exc:
             logger.error("Experiment %s failed: %s", eid, exc, exc_info=True)
+            failed_experiments.append(eid)
+
+    if failed_experiments:
+        logger.error("Failed experiment(s): %s", ", ".join(failed_experiments))
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -2,8 +2,12 @@
 """Regenerate all report figures from results/ CSVs."""
 import argparse
 import logging
+import os
 import sys
+import tempfile
 from pathlib import Path
+
+os.environ.setdefault("MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "balancing_robot_matplotlib"))
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
@@ -26,10 +30,12 @@ def main():
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Find all CSVs in results/
-    csv_files = list(results_dir.rglob("*.csv"))
+    # Only raw telemetry is valid input. Generated summary tables under
+    # results/tables/ do not have a time series and must never replace runs.
+    data_dir = results_dir / "data"
+    csv_files = list(data_dir.rglob("*.csv")) if data_dir.is_dir() else []
     if not csv_files:
-        logger.warning("No CSV files found in %s — run experiments first.", results_dir)
+        logger.warning("No raw CSV files found in %s — run experiments first.", data_dir)
         sys.exit(0)
 
     logger.info("Found %d CSV file(s). Generating plots ...", len(csv_files))

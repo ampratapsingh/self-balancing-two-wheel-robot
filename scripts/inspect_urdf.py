@@ -106,11 +106,16 @@ def main():
     weighted_pos = [0.0, 0.0, 0.0]
     # Reset and step to get positions
     p.resetBasePositionAndOrientation(robot_id, [0, 0, 0.08], [0, 0, 0, 1], physicsClientId=client)
-    pos_b, _ = p.getBasePositionAndOrientation(robot_id, physicsClientId=client)
+    pos_b, orn_b = p.getBasePositionAndOrientation(robot_id, physicsClientId=client)
     base_mass = p.getDynamicsInfo(robot_id, -1, physicsClientId=client)[0]
+    base_inertial_pos = base_info[3]
+    base_inertial_orn = base_info[4]
+    base_com_pos, _ = p.multiplyTransforms(
+        pos_b, orn_b, base_inertial_pos, base_inertial_orn
+    )
     total_mass += base_mass
     for k in range(3):
-        weighted_pos[k] += base_mass * pos_b[k]
+        weighted_pos[k] += base_mass * base_com_pos[k]
     for i in range(num_joints):
         ls = p.getLinkState(robot_id, i, physicsClientId=client)
         link_pos = ls[0]  # world position of link CoM

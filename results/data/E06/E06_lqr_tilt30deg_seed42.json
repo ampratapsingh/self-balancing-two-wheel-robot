@@ -74,9 +74,9 @@
     },
     "disturbance": null
   },
-  "git_commit": "45b42e14f52e1369bfdc78a250039a41dc0843d8",
+  "git_commit": "f6fd785d0e75f183383cc97f55528ba6112abbc6",
   "python_version": "3.12.12",
   "pybullet_version": 202010061,
-  "saved_at": "2026-11-16T19:24:28.950460+05:30",
+  "saved_at": "2026-11-16T19:53:30.253598+05:30",
   "csv_file": "/Users/saiuppalapati/Downloads/Robotics Project/results/data/E06/E06_lqr_tilt30deg_seed42.csv"
 }

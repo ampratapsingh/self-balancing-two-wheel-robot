@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 def run_disturbance(
     robot_cfg: dict[str, Any],
     sim_cfg: dict[str, Any],
-    controller_cfg: dict[str, Any],
+    pid_cfg: dict[str, Any],
+    lqr_cfg: dict[str, Any],
     exp_cfg: dict[str, Any],
     output_dir: str | Path,
     gui: bool = False,
@@ -25,7 +26,6 @@ def run_disturbance(
     from balancing_robot.dynamics import compute_model_params, compute_state_space
     from balancing_robot.simulation import Simulation
     from balancing_robot.analysis.io import save_run
-    from balancing_robot.config import load_lqr_config
 
     out_dir = Path(output_dir) / "data" / "E05"
     duration_s = float(exp_cfg.get("duration_s", 20.0))
@@ -46,13 +46,11 @@ def run_disturbance(
 
     params = compute_model_params(robot_cfg)
     A, B = compute_state_space(params)
-    lqr_cfg = load_lqr_config()
-
     results = []
     for ctrl_name in controllers_to_run:
         if ctrl_name == "pid":
-            controller = PIDController.from_config(controller_cfg)
-            active_controller_cfg = controller_cfg
+            controller = PIDController.from_config(pid_cfg)
+            active_controller_cfg = pid_cfg
         else:
             controller = LQRController.from_config(lqr_cfg, A, B)
             active_controller_cfg = lqr_cfg

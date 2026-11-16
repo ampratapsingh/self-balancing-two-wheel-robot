@@ -19,12 +19,12 @@ controller, and a full-state linear quadratic regulator (LQR) are implemented in
 simulation runs at 240 Hz and records controller, state, wheel, and disturbance data to CSV. Six
 experiments evaluate uncontrolled falling, nominal balancing, controller comparison, disturbance
 response, and recovery from initial tilts between 1° and 30°. The uncontrolled robot falls from a
-2° tilt after 1.113 s. Both controllers remain upright for the 30 s nominal test. PID achieves a
-lower nominal RMS tilt error (0.00878 rad) but accumulates 75.63 m of position drift, whereas LQR
-limits drift to 1.36 m. In the tilt sweep, PID succeeds through 12° and fails from 15° onward;
-LQR succeeds at every tested tilt through 30°. The results demonstrate a clear robustness and
-position-regulation advantage for the chosen LQR design, while also showing that stability alone
-does not imply compliance with the strict ±0.5° settling criterion.
+2° tilt after 0.542 s. Both controllers remain upright for the 30 s nominal test and meet the
+strict ±0.5° settling definition. PID achieves lower nominal RMS tilt error (0.001685 rad) and
+settles in 0.117 s, while LQR has lower final position displacement (0.0085 m versus 0.0185 m).
+In the tilt sweep, both controllers succeed at every tested tilt through 30°; their upper
+robustness limits were therefore not measured. The results show a tilt-regulation versus
+position-containment trade-off for the selected designs rather than a universal winner.
 
 ## 1. Introduction
 
@@ -159,7 +159,7 @@ All results tables are reproducible with:
 
 ### 8.1 E01: uncontrolled fall
 
-From an initial 2° forward tilt, the robot crossed the 45° fall threshold at **1.112589 s**.
+From an initial 2° forward tilt, the robot crossed the 45° fall threshold at **0.541710 s**.
 It received no wheel torque. This confirms the physical simulation exhibits the expected open-loop
 instability.
 
@@ -171,22 +171,22 @@ Both controllers stayed upright for 30 s, but their performance differs material
 
 | Controller | RMS tilt (rad) | SS absolute tilt (°) | Peak torque (Nm) | Final position (m) |
 |---|---:|---:|---:|---:|
-| PID | 0.008780 | 0.508386 | 6.806850 | 75.630257 |
-| LQR | 0.091038 | 5.218751 | 2.492953 | 1.360425 |
+| PID | 0.001685 | 0.000434 | 9.337955 | 0.018531 |
+| LQR | 0.003813 | 0.037638 | 10.000000 | 0.008544 |
 
-PID has smaller tilt error in this nominal run, but it rolls continuously because it does not
-penalise horizontal position. LQR uses the position states and limits the final displacement to
-about 1.36 m, but its simulated steady-state tilt is approximately 5.22°. Neither trace satisfies
-the strict ±0.5° settling definition for the entire remaining duration; this must be reported
-instead of describing either run as fully settled.
+PID has smaller tilt error and reaches the strict settling band sooner in this nominal run. LQR
+uses the position states and has the lower final displacement (about 8.5 mm versus 18.5 mm), but
+requires the full 10 Nm torque limit and settles more slowly. Both traces meet the strict ±0.5°
+settling definition; their measured settling times are 0.117 s (PID) and 5.730 s (LQR).
 
 ![Nominal position drift comparison](figures/E02_E03_position_drift.png)
 
 ### 8.3 E04: matched initial-tilt comparison
 
-The complete results are in `results/tables/E04_comparison_table.csv`. The key robustness result
-is that both controllers survive through 10°, whereas **PID falls at 15° after 9.650772 s** and
-**LQR completes the 15° run**. The 10° overlay below is a matched successful case.
+The complete results are in `results/tables/E04_comparison_table.csv`. Both controllers complete
+every matched case through 15°. PID reaches the ±0.5° band sooner in the 15° case (0.225 s versus
+5.180 s for LQR), while LQR has lower final displacement (0.041 m versus 0.236 m). The 10° overlay
+below is a matched successful case.
 
 ![E04 tilt comparison at 10 degrees](figures/E04_tilt.png)
 
@@ -195,36 +195,36 @@ is that both controllers survive through 10°, whereas **PID falls at 15° after
 ### 8.4 E05: disturbance response
 
 Both controllers remain below the 45° fall limit following the 10 N disturbance. PID reaches a
-post-disturbance maximum tilt of 0.664236° and ends at 0.551609°, but drifts 47.750159 m. LQR
-reaches 8.550129° after the impulse and ends at 6.056743°, while its final position is 1.546272 m.
-Thus, within the chosen implementation, PID rejects this particular impulse better in tilt but LQR
-provides much stronger position containment. Both claims are limited to this one force magnitude,
+post-disturbance maximum tilt of 0.123062° and ends at 0.000922°, while LQR reaches 3.059538° and
+ends at 0.006406°. LQR has much lower final displacement (0.015029 m versus 1.263479 m for PID).
+Thus, within the chosen implementation, PID rejects this particular impulse better in tilt while
+LQR provides stronger position containment. Both claims are limited to this one force magnitude,
 direction, height, and duration.
 
 ![E05 disturbance response](figures/E05_tilt.png)
 
 ### 8.5 E06: initial-tilt sweep
 
-PID succeeds for 1°, 2°, 3°, 5°, 7°, 10°, and 12°, and fails at 15°, 18°, 20°, 25°, and 30°.
-LQR succeeds at all twelve tested initial tilts through 30°. Accordingly, the measured PID basin
-in this one-dimensional sweep extends to **12°**, while the LQR basin is **at least 30°**; the
-upper LQR limit was not tested.
+Both PID and LQR succeed at all twelve tested initial tilts through 30°. Accordingly, the measured
+one-dimensional basin for each controller is **at least 30°**; the upper limit for neither
+controller was tested. PID has lower RMS tilt across the sweep, whereas LQR generally has lower
+final displacement at the larger tilts.
 
 ![E06 initial-tilt success map](figures/E06_tilt.png)
 
 ### 8.6 Interpretation
 
-The experiments do not support a blanket claim that LQR is better on every metric. PID has lower
-nominal RMS tilt and smaller response to this single disturbance, but at the cost of severe
-position drift and a much smaller measured initial-tilt tolerance. LQR reduces drift and remains
-upright at larger initial tilts, but it exhibits a persistent tilt offset in these PyBullet runs.
-The appropriate conclusion is therefore metric- and task-dependent.
+The experiments do not support a blanket claim that one controller is better on every metric. PID
+has lower nominal RMS tilt, faster settling, and a smaller response to this single disturbance,
+but it has greater position displacement. LQR provides stronger position containment but reaches
+the torque limit and settles more slowly. Both remained upright at every tested initial tilt. The
+appropriate conclusion is therefore metric- and task-dependent.
 
 ## 9. Contributions
 
 1. **Matched controller comparison:** PID and LQR use the same robot, timing, torque limit,
    initial conditions, data schema, and metrics.
-2. **Measured initial-condition robustness:** E06 maps success/failure across 24 controller/tilt
+2. **Measured initial-condition robustness:** E06 verifies success across 24 controller/tilt
    combinations rather than showing a single demonstration.
 3. **Disturbance evidence:** E05 records both tilt and position consequences of a defined external
    impulse.
@@ -244,9 +244,10 @@ additional physical validation: an uncontrolled tilted robot falls rather than r
 - PyBullet contact and friction do not replace physical hardware validation.
 - The LQR model is linearised around upright operation; its theoretical guarantees are local.
 - The study is limited to pitch-plane motion and symmetric torque; yaw and steering are excluded.
-- PID has no position feedback, which explains the large accumulated drift.
+- PID has no explicit position feedback, which can allow greater accumulated drift than the
+  full-state LQR design.
 - The LQR configuration was not exhaustively re-tuned against the nonlinear simulator; its
-  persistent tilt offset should be investigated before making an optimality claim.
+  torque-versus-settling trade-off should be investigated before making an optimality claim.
 - Sensor noise, delay, motor saturation dynamics, battery effects, and uneven terrain are outside
   the primary experiments.
 
@@ -254,9 +255,9 @@ additional physical validation: an uncontrolled tilted robot falls rather than r
 
 The project delivers a tested PyBullet self-balancing robot, analytical model, PID controller,
 LQR controller, six experiment protocols, reproducible result tables, and a public repository.
-The strongest experimental difference is robustness to initial tilt: LQR succeeded through the
-largest tested 30° initial tilt, whereas PID failed from 15°. PID produced lower tilt error in the
-nominal and tested disturbance runs, but with unacceptable position drift for a mobile robot.
+Both controllers succeeded through the largest tested 30° initial tilt, so a larger sweep is needed
+to distinguish their robustness limits. PID produced lower tilt error and faster settling in the
+nominal and tested disturbance runs, while LQR produced lower final position displacement.
 
 Future work should add position-aware PID or cascaded control, tune LQR weights using a systematic
 nonlinear simulation sweep, model sensor noise and motor dynamics, add steering/yaw control, and
