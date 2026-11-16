@@ -1,0 +1,7 @@
+Q:
+  q_x: 1.0
+  q_xdot: 1.0
+  q_theta: 100.0
+  q_thetadot: 10.0
+R: 0.1
+max_torque_total: 10.0

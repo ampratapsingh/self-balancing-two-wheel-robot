@@ -1,0 +1,18 @@
+physics:
+  timestep: 0.004167
+  gravity: -9.81
+  num_solver_iterations: 50
+  num_sub_steps: 1
+  use_split_impulse: true
+  split_impulse_threshold: -0.02
+
+controller_rate_hz: 240
+camera:
+  distance: 1.5
+  yaw: 45.0
+  pitch: -20.0
+
+initial_tilt_deg: 3.0
+fall_threshold_deg: 45.0
+real_time_pacing: false
+seed: 42

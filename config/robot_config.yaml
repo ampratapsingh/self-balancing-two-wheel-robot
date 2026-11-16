@@ -1,0 +1,24 @@
+wheel:
+  radius: 0.08
+  width: 0.035
+  mass: 0.25
+  color: [0.1, 0.1, 0.9, 1.0]
+
+chassis:
+  height: 0.45
+  width: 0.20
+  depth: 0.12
+  mass: 2.0
+  color: [0.8, 0.2, 0.2, 1.0]
+
+gravity: 9.81
+timestep: 0.004167
+
+wheel_friction:
+  lateral: 0.8
+  rolling: 0.001
+  spinning: 0.001
+
+max_torque_per_wheel: 5.0
+wheel_joint_damping: 0.01
+urdf_path: assets/robot/balancing_robot.urdf

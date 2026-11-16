@@ -1,0 +1,7 @@
+experiment_id: E02
+name: PID Balancing
+controller: pid
+duration_s: 30.0
+initial_tilt_deg: 3.0
+seed: 42
+disturbance: null

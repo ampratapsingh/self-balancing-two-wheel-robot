@@ -1,0 +1,7 @@
+experiment_id: E06
+name: Initial Tilt Sweep
+controllers: [pid, lqr]
+duration_s: 15.0
+tilt_range_deg: [1, 2, 3, 5, 7, 10, 12, 15, 18, 20, 25, 30]
+seed: 42
+disturbance: null

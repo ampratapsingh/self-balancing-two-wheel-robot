@@ -1,0 +1,11 @@
+experiment_id: E05
+name: Disturbance Response
+controllers: [pid, lqr]
+duration_s: 20.0
+initial_tilt_deg: 3.0
+seed: 42
+disturbance:
+  apply_at_s: 5.0
+  force_N: [10.0, 0.0, 0.0]
+  duration_s: 0.1
+  height_m: 0.3

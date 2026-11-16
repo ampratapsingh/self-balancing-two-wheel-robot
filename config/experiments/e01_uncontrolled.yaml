@@ -1,0 +1,7 @@
+experiment_id: E01
+name: Uncontrolled Fall
+controller: none
+duration_s: 5.0
+initial_tilt_deg: 2.0
+seed: 42
+disturbance: null

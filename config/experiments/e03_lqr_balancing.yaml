@@ -1,0 +1,7 @@
+experiment_id: E03
+name: LQR Balancing
+controller: lqr
+duration_s: 30.0
+initial_tilt_deg: 3.0
+seed: 42
+disturbance: null
