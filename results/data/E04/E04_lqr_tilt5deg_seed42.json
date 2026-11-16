@@ -1,0 +1,10 @@
+{
+  "dt": 0.004167,
+  "duration_s": 20.0,
+  "initial_tilt_deg": 5.0,
+  "controller": "LQR",
+  "n_steps": 4799,
+  "fell": false,
+  "saved_at": "2026-11-16T13:32:07.495623",
+  "csv_file": "/Users/saiuppalapati/Downloads/Robotics Project/results/data/E04/E04_lqr_tilt5deg_seed42.csv"
+}

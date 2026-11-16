@@ -27,7 +27,17 @@ def main():
 
     experiment_ids = ["E01", "E02", "E03", "E04", "E05", "E06"] if args.all else [args.experiment]
 
-    # Import experiment runners (implemented in Phase 2)
+    # Load configs once
+    from balancing_robot.config import (
+        load_robot_config, load_simulation_config,
+        load_pid_config, load_lqr_config, load_experiment_config,
+    )
+    robot_cfg = load_robot_config()
+    sim_cfg = load_simulation_config()
+    pid_cfg = load_pid_config()
+    lqr_cfg = load_lqr_config()
+
+    # Import experiment runners
     try:
         from balancing_robot.experiments.baseline import run_uncontrolled, run_pid, run_lqr
         from balancing_robot.experiments.comparison import run_comparison
@@ -35,26 +45,29 @@ def main():
         from balancing_robot.experiments.sweeps import run_tilt_sweep
     except ImportError as e:
         logger.error("Experiment modules not yet implemented: %s", e)
-        logger.error("Run after Phase 2 implementation is complete.")
         sys.exit(1)
 
-    runners = {
-        "E01": run_uncontrolled,
-        "E02": run_pid,
-        "E03": run_lqr,
-        "E04": run_comparison,
-        "E05": run_disturbance,
-        "E06": run_tilt_sweep,
+    out_dir = Path(args.output_dir)
+
+    exp_map = {
+        "E01": lambda: run_uncontrolled(robot_cfg, sim_cfg, load_experiment_config("e01_uncontrolled"), out_dir),
+        "E02": lambda: run_pid(robot_cfg, sim_cfg, pid_cfg, load_experiment_config("e02_pid_balancing"), out_dir),
+        "E03": lambda: run_lqr(robot_cfg, sim_cfg, lqr_cfg, load_experiment_config("e03_lqr_balancing"), out_dir),
+        "E04": lambda: run_comparison(robot_cfg, sim_cfg, pid_cfg, lqr_cfg,
+                                       load_experiment_config("e04_comparison"), out_dir),
+        "E05": lambda: run_disturbance(robot_cfg, sim_cfg, pid_cfg,
+                                        load_experiment_config("e05_disturbance"), out_dir),
+        "E06": lambda: run_tilt_sweep(robot_cfg, sim_cfg, pid_cfg, lqr_cfg,
+                                       load_experiment_config("e06_tilt_sweep"), out_dir),
     }
 
-    out_dir = Path(args.output_dir)
     for eid in experiment_ids:
         logger.info("Running experiment %s ...", eid)
         try:
-            runners[eid](output_dir=out_dir)
-            logger.info("Experiment %s complete.", eid)
+            result = exp_map[eid]()
+            logger.info("Experiment %s complete: %s", eid, result)
         except Exception as exc:
-            logger.error("Experiment %s failed: %s", eid, exc)
+            logger.error("Experiment %s failed: %s", eid, exc, exc_info=True)
 
 
 if __name__ == "__main__":

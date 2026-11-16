@@ -1,0 +1,10 @@
+{
+  "dt": 0.004167,
+  "duration_s": 20.0,
+  "initial_tilt_deg": 3.0,
+  "controller": "PID",
+  "n_steps": 4799,
+  "fell": false,
+  "saved_at": "2026-11-16T13:32:37.088342",
+  "csv_file": "/Users/saiuppalapati/Downloads/Robotics Project/results/data/E05/E05_pid_dist_seed42.csv"
+}

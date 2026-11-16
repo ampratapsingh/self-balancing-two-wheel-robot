@@ -1,0 +1,10 @@
+{
+  "dt": 0.004167,
+  "duration_s": 15.0,
+  "initial_tilt_deg": 30.0,
+  "controller": "PID",
+  "n_steps": 3599,
+  "fell": true,
+  "saved_at": "2026-11-16T13:32:59.195398",
+  "csv_file": "/Users/saiuppalapati/Downloads/Robotics Project/results/data/E06/E06_pid_tilt30deg_seed42.csv"
+}
