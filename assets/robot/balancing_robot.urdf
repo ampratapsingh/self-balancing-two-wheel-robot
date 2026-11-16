@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<robot name="balancing_robot">
+
+  <!-- ================================================================
+       Self-Balancing Two-Wheel Robot URDF
+       Frames: X forward, Y left, Z up (right-hand)
+       Base link origin: at wheel axle centre, robot upright
+       Tilt theta: 0 = upright, >0 = forward lean
+       Wheel joints: continuous, axis Y, positive torque = forward motion
+       ================================================================ -->
+
+  <!-- BASE LINK (chassis) -->
+  <link name="base_link">
+    <inertial>
+      <!-- CoM at geometric centre of chassis box above axle -->
+      <origin xyz="0 0 0.225" rpy="0 0 0"/>
+      <mass value="2.0"/>
+      <inertia ixx="0.036150" ixy="0" ixz="0"
+               iyy="0.009067" iyz="0"
+               izz="0.040417"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.225" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.20 0.45"/>
+      </geometry>
+      <material name="chassis_red">
+        <color rgba="0.8 0.2 0.2 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.225" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.20 0.45"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- FRONT MARKER (visual only - small cylinder on front face) -->
+  <link name="front_marker_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder length="0.03" radius="0.015"/>
+      </geometry>
+      <material name="marker_yellow">
+        <color rgba="1.0 1.0 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="front_marker_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_marker_link"/>
+    <origin xyz="0.065 0 0.225" rpy="0 0 0"/>
+  </joint>
+
+  <!-- LEFT WHEEL -->
+  <link name="left_wheel_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.25"/>
+      <inertia ixx="0.000426" ixy="0" ixz="0"
+               iyy="0.000800" iyz="0"
+               izz="0.000426"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder length="0.035" radius="0.08"/>
+      </geometry>
+      <material name="wheel_blue">
+        <color rgba="0.1 0.1 0.9 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder length="0.035" radius="0.08"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel_link"/>
+    <origin xyz="0 0.1175 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.01" friction="0.0"/>
+  </joint>
+
+  <!-- RIGHT WHEEL -->
+  <link name="right_wheel_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.25"/>
+      <inertia ixx="0.000426" ixy="0" ixz="0"
+               iyy="0.000800" iyz="0"
+               izz="0.000426"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder length="0.035" radius="0.08"/>
+      </geometry>
+      <material name="wheel_blue">
+        <color rgba="0.1 0.1 0.9 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder length="0.035" radius="0.08"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel_link"/>
+    <origin xyz="0 -0.1175 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.01" friction="0.0"/>
+  </joint>
+
+</robot>
