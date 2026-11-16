@@ -1,0 +1,62 @@
+======================================================================
+URDF INSPECTION REPORT
+File: /Users/saiuppalapati/Downloads/Robotics Project/assets/robot/balancing_robot.urdf
+======================================================================
+
+BASE LINK (index -1): base_link
+  mass          = 2======================================================================
+URDF INSPECTION REPORT
+File: /Users/saiuppalapati/Downloads/Robotics Project/assets/robot/balancing_robot.urdf
+======================================================================
+
+BASE LINK (index -1): base_link
+  mass          = 2.000000 kg
+  local CoM     = (0.0, 0.0, 0.225)
+  inertia diag  = (0.03615, 0.009067, 0.040417)
+  local CoM quat= (0.0, 0.0, 0.0, 1.0)
+
+JOINTS AND LINKS (3 joints):
+
+  Joint 0: front_marker_joint
+    type          = FIXED
+    link (child)  = front_marker_link
+    axis          = (0.0, 0.0, 0.0)
+    parent frame pos = (0.065, 0.0, 0.0)
+    damping       = 0.000000
+    friction      = 0.000000
+    mass          = 1.000000 kg
+    inertia diag  = ixx=1.000000e+00, iyy=1.000000e+00, izz=1.000000e+00
+    local CoM     = (0.0, 0.0, 0.0)
+
+  Joint 1: left_wheel_joint
+    type          = CONTINUOUS
+    link (child)  = left_wheel_link
+    axis          = (0.0, 1.0, 0.0)
+    parent frame pos = (0.0, 0.1175, -0.225)
+    damping       = 0.010000
+    friction      = 0.000000
+    mass          = 0.250000 kg
+    inertia diag  = ixx=4.260000e-04, iyy=8.000000e-04, izz=4.260000e-04
+    local CoM     = (0.0, 0.0, 0.0)
+
+  Joint 2: right_wheel_joint
+    type          = CONTINUOUS
+    link (child)  = right_wheel_link
+    axis          = (0.0, 1.0, 0.0)
+    parent frame pos = (0.0, -0.1175, -0.225)
+    damping       = 0.010000
+    friction      = 0.000000
+    mass          = 0.250000 kg
+    inertia diag  = ixx=4.260000e-04, iyy=8.000000e-04, izz=4.260000e-04
+    local CoM     = (0.0, 0.0, 0.0)
+
+TOTAL MASS: 3.5000 kg
+TOTAL CoM (world frame, robot upright): [0.018571428571428572, 0.0, 0.047857142857142855]
+
+Joint name → index mapping: {'front_marker_joint': 0, 'left_wheel_joint': 1, 'right_wheel_joint': 2}
+
+======================================================================
+END OF INSPECTION
+======================================================================
+
+Saved to /Users/saiuppalapati/Downloads/Robotics Project/docs/urdf_inspection.txt

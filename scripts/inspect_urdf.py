@@ -65,7 +65,7 @@ def main():
         ji = p.getJointInfo(robot_id, i, physicsClientId=client)
         jtype_map = {
             p.JOINT_REVOLUTE: "REVOLUTE",
-            p.JOINT_CONTINUOUS: "CONTINUOUS",
+            getattr(p, "JOINT_CONTINUOUS", p.JOINT_REVOLUTE): "CONTINUOUS",
             p.JOINT_PRISMATIC: "PRISMATIC",
             p.JOINT_FIXED: "FIXED",
             p.JOINT_SPHERICAL: "SPHERICAL",

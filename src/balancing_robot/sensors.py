@@ -133,7 +133,7 @@ class Sensors:
         if self._first_read:
             self._lpf_state = raw_theta_dot
             self._first_read = False
-        self._lpf_state = self.lpf_alpha * self._lpf_state + (1.0 - self.lpf_alpha) * raw_theta_dot
+        self._lpf_state = (1.0 - self.lpf_alpha) * self._lpf_state + self.lpf_alpha * raw_theta_dot
         theta_dot_filtered = self._lpf_state
 
         raw_state = {

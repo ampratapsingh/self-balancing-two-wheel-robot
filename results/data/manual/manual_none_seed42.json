@@ -1,0 +1,10 @@
+{
+  "dt": 0.004167,
+  "duration_s": 5.0,
+  "initial_tilt_deg": 2.0,
+  "controller": "none",
+  "n_steps": 1199,
+  "fell": true,
+  "saved_at": "2026-11-16T12:35:14.493496",
+  "csv_file": "/Users/saiuppalapati/Downloads/Robotics Project/results/data/manual/manual_none_seed42.csv"
+}
