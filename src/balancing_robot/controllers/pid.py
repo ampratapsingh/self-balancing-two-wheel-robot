@@ -82,7 +82,8 @@ class PIDController(BaseController):
             raise ValueError(f"dt must be positive, got {dt}")
 
         theta = float(state["theta"])
-        error = self.theta_ref - theta
+        # error > 0 when leaning forward → positive torque → corrects forward lean
+        error = theta - self.theta_ref
 
         # Proportional term
         p_term = self.Kp * error
@@ -106,10 +107,9 @@ class PIDController(BaseController):
         alpha = self.derivative_filter_alpha
         self._deriv_filtered = (1.0 - alpha) * self._deriv_filtered + alpha * raw_deriv
 
-        # Derivative term: negative because derivative-on-measurement;
-        # when theta is increasing (falling forward), raw_deriv > 0,
-        # so the derivative term opposes the motion (adds torque)
-        d_term = -self.Kd * self._deriv_filtered
+        # Derivative term: derivative-on-measurement.
+        # When theta increasing (leaning forward), deriv > 0 → positive D → more corrective torque
+        d_term = self.Kd * self._deriv_filtered
 
         output = p_term + i_term + d_term
 

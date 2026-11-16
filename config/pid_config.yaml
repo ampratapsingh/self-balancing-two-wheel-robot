@@ -1,6 +1,6 @@
-Kp: 35.0
-Ki: 0.5
-Kd: 2.5
+Kp: 130.0
+Ki: 0.3
+Kd: 8.0
 integral_clamp: 10.0
 derivative_filter_alpha: 0.7
 max_torque_total: 10.0

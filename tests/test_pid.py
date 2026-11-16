@@ -71,11 +71,12 @@ def test_pid_derivative_on_measurement():
     out1 = pid.compute({"theta": 0.5}, dt=0.1)
     assert out1 == pytest.approx(0.0, abs=1e-9)  # no derivative on first call
     # Second call: theta increased by 0.1, so raw_deriv = 0.1/0.1 = 1.0
-    # d_term = -Kd * filtered_deriv = -1.0 * 1.0 = -1.0
+    # d_term = +Kd * filtered_deriv = +1.0 * 1.0 = +1.0
+    # (derivative-on-measurement, positive lean → positive corrective torque)
     out2 = pid.compute({"theta": 0.6}, dt=0.1)
     # With no filter (alpha=1.0): filtered = raw_deriv = 1.0
-    # d_term = -1.0 * 1.0 = -1.0
-    assert out2 == pytest.approx(-1.0, abs=1e-6)
+    # d_term = +1.0 * 1.0 = +1.0
+    assert out2 == pytest.approx(1.0, abs=1e-6)
 
 
 def test_pid_dt_zero_raises():
