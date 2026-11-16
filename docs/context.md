@@ -3,7 +3,7 @@
 > picking up this project mid-way. Read this before touching any code.
 > Keep it updated whenever a phase completes or a major decision is made.
 >
-> **Last updated:** 2026-11-16 — Phase 1 COMPLETE, Phase 2 starting.
+> **Last updated:** 2026-11-16 — Phase 2 COMPLETE (all 6 experiments run, tag v0.3.0).
 
 ---
 
@@ -242,9 +242,9 @@ max_torque_total: 10.0
 
 ### ✅ Phase 1 — Core Implementation (COMPLETE) — tag: v0.2.0
 - `dynamics.py`: Lagrangian model, A/B matrices, eigenvalues, controllability ✅
-- `sensors.py`: Tilt extraction from quaternion, noise/delay/LPF ✅
-- `controllers/pid.py`: PID + anti-windup + derivative filter ✅
-- `controllers/lqr.py`: CARE solver + saturation (bug fixed) ✅
+- `sensors.py`: Tilt extraction from quaternion, noise/delay/LPF ✅ (LPF alpha convention fixed)
+- `controllers/pid.py`: PID + anti-windup + derivative filter ✅ (sign convention fixed: `error=theta-ref`, `d_term=+Kd*deriv`)
+- `controllers/lqr.py`: CARE solver + saturation (shape bug fixed: `.item()`) ✅
 - `simulation.py`, `robot.py`, `physics.py`: Full PyBullet simulation loop ✅
 - `analysis/metrics.py`, `io.py`, `plots.py`: Metrics + I/O + plotting ✅
 - `experiments/baseline.py`, `comparison.py`, `disturbance.py`, `sweeps.py` ✅
@@ -252,22 +252,36 @@ max_torque_total: 10.0
 - **Test results: 47/47 PASS** (fast tests, 3 @slow deselected)
 - Commit: `17c8c68`
 
-### 🔲 Phase 2 — Integration & Experiments (NEXT)
-**What needs to happen:**
-1. Install pybullet: `conda install -c conda-forge pybullet` or `pip install pybullet`
-2. Verify URDF loads in PyBullet: `python scripts/inspect_urdf.py`
-3. Run headless PID demo: `python scripts/run_simulation.py --controller pid --headless --duration 10`
-4. Run headless LQR demo: `python scripts/run_simulation.py --controller lqr --headless --duration 10`
-5. Run all experiments: `python scripts/run_experiments.py --all`
-6. Check results/ for CSVs
-7. Generate plots: `python scripts/make_report_assets.py`
-8. Run slow integration tests: `python -m pytest tests/test_integration_balance.py -v`
-9. Implement `scripts/tune_pid.py` and `scripts/sweep_lqr_qr.py`
+### ✅ Phase 2 — Integration & Experiments (COMPLETE) — tag: v0.3.0
 
-### 🔲 Phase 3 — Report Assets & Write-up (PENDING)
-- `make_report_assets.py` → all figures in `report/figures/`
-- Write report sections in `report/`
-- Summary tables in `report/tables/`
+**pybullet:** Installed via `conda install -c conda-forge pybullet` ✅
+
+**PID gains (tuned):** `Kp=130.0, Ki=0.3, Kd=8.0` — in `config/pid_config.yaml`
+
+**All 6 experiments ran headlessly and produced CSVs:**
+
+| Exp | Name | Result |
+|---|---|---|
+| E01 | Uncontrolled fall | Fell at **1.11s** ✅ |
+| E02 | PID balancing 30s | **Success=True** ✅ |
+| E03 | LQR balancing 30s | **Success=True** ✅ |
+| E04 | PID vs LQR comparison (2°,5°,10°,15°) | PID fails at 15°; LQR succeeds at all ✅ |
+| E05 | Disturbance response (10N at t=5s) | Both PID and LQR survive ✅ |
+| E06 | Tilt sweep (1°–30°) | PID max: **12°**; LQR max: **30°** ✅ |
+
+**E06 key finding:** PID basin of attraction ≈12°; LQR robustly handles up to 30° (nonlinearity limit not hit).
+
+**Report figures:** 12 PNG plots generated in `report/figures/` (tilt + torque for each E01–E06) ✅
+
+**Commits:** `b32a7f6` (PID fix), `8095e3a` (all experiments + figures). **Tag: v0.3.0**
+
+### 🔲 Phase 3 — Report & Analysis Write-up (NEXT)
+- Write `report/report.md` (or LaTeX) with methods, results, figures
+- Summary tables comparing PID vs LQR metrics (RMS tilt, max torque, settling time)
+- Run `scripts/tune_pid.py` for more systematic PID tuning (optional)
+- Run `scripts/sweep_lqr_qr.py` for LQR Q/R sweep (optional)
+- Slow integration tests: `python3 -m pytest tests/test_integration_balance.py -v`
+- Update `CHANGELOG.md` with Phase 2/3 entries
 
 ---
 
@@ -275,10 +289,10 @@ max_torque_total: 10.0
 
 1. **Read this file** (`docs/context.md`) in full.
 2. Run `git log --oneline` to see latest commits and tags.
-3. Run `pytest tests/ -m "not slow" -v` — should be **47 passed**.
-4. Check **Phase 2** steps above — start from step 1 (install pybullet).
-5. If pybullet install fails, check if a conda env exists: `conda env list`
-6. Update this file when Phase 2 completes.
+3. Run `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -v` — should be **47 passed**.
+4. All 6 experiments already ran — results in `results/data/E01/` through `results/data/E06/`
+5. Report figures already in `report/figures/` (12 PNGs)
+6. **Next: Phase 3** — write report, compute summary metrics, fill `report/tables/`
 
 ---
 
@@ -286,10 +300,12 @@ max_torque_total: 10.0
 
 | Issue | Detail | Status |
 |---|---|---|
-| pybullet not installed | Needs C compiler or conda-forge wheel | ⚠️ Blocking Phase 2 |
+| PID basin of attraction | Fails ≥15° initial tilt with Kp=130 | Expected — nonlinear regime |
+| LQR position drift | Robot slowly rolls away (q_x=1 helps but doesn't fully stop) | Acceptable for balancing task |
 | `utcnow()` deprecation | `analysis/io.py` uses deprecated datetime API | Minor warning, non-blocking |
 | System Python | Use miniforge3 only, not `python3` | Known |
+| front_marker_link inertia | PyBullet warns about no inertial data for this link | Harmless |
 
 ---
 
-*Last updated: 2026-11-16 — Phase 1 complete (47/47 tests pass, tag v0.2.0). Phase 2 is next.*
+*Last updated: 2026-11-16 — Phase 2 complete (all 6 experiments, 12 report figures, tag v0.3.0). Phase 3 is next.*

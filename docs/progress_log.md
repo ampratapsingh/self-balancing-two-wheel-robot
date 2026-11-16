@@ -70,3 +70,39 @@ Also added (scaffold agent):
 - `docs/progress_log.md`, `docs/decision_log.md`
 - `tests/test_robot.py`, `tests/test_physics.py` — placeholder stubs
 - `tests/test_integration_balance.py` — @pytest.mark.slow integration tests
+
+
+---
+
+## Phase 2 — Physics Validation & All Experiments (2026-11-16) ✅
+
+### Completed
+- **pybullet installed** via `conda install -c conda-forge pybullet` (Oct 2025 build) ✅
+- **Physics validations:**
+  - V1: Chassis mass = 2.000 kg ✅
+  - V2: Uncontrolled fall in 1.11s from 2° ✅
+  - V3: Wheel velocities build under applied torque ✅
+- **Sensor LPF bug fixed:** Alpha convention was inverted (`alpha*prev+(1-alpha)*raw` → fixed to `(1-alpha)*prev+alpha*raw`)
+- **PID sign convention fixed:** `error = theta - theta_ref` (not `theta_ref - theta`); `d_term = +Kd * deriv`
+- **PID gains tuned:** `Kp=130.0, Ki=0.3, Kd=8.0` via grid sweep (31/32 combos succeed)
+- **LQR bug fixed:** `.item()` on 1D result to get scalar
+- **47/47 fast tests PASS** (after fixing test_pid sign expectation)
+- **All 6 experiments ran headlessly:**
+  - E01: Uncontrolled fall at 1.11s
+  - E02: PID balances for 30s — Success=True
+  - E03: LQR balances for 30s — Success=True
+  - E04: PID vs LQR at 2°,5°,10°,15° — LQR wins at 15°
+  - E05: Both survive 10N disturbance impulse at t=5s
+  - E06: PID max tilt = 12°; LQR max tilt = 30°
+- **12 report figures generated** in `report/figures/` (tilt + torque for E01–E06)
+- **Tagged v0.3.0**
+
+### Key Commits
+- `1ade2cf` — sensor LPF fix
+- `b32a7f6` — PID sign + gains + test fix
+- `8095e3a` — experiments E04/E05/E06 implemented + all results + figures
+
+### Findings
+- LQR significantly outperforms PID in terms of robustness (handles 30° vs 12° for PID)
+- Both controllers handle the 10N disturbance impulse successfully
+- Nonlinear effects limit PID performance but are well within the linearisation valid range for LQR
