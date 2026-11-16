@@ -3,7 +3,7 @@
 > picking up this project mid-way. Read this before touching any code.
 > Keep it updated whenever a phase completes or a major decision is made.
 >
-> **Last updated:** 2026-11-16 — Phase 2 complete; integrity and provenance maintenance complete; Phase 3 next.
+> **Last updated:** 2026-11-16 — Phase 2 complete; integrity/provenance maintenance and public GitHub publication complete; Phase 3 next.
 
 ---
 
@@ -14,6 +14,7 @@
 | **Project** | Self-Balancing Two-Wheel Robot (Inverted Pendulum) |
 | **Course** | University Robotics Course |
 | **Repo root** | `/Users/saiuppalapati/Downloads/Robotics Project` |
+| **GitHub repository** | https://github.com/saiuppalapati011/self-balancing-two-wheel-robot (public; `origin/main`) |
 | **Package name** | `balancing_robot` |
 | **Package location** | `src/balancing_robot/` |
 | **Python** | 3.10+ required; use `/Users/saiuppalapati/miniforge3/bin/python3` (3.12.12) on this machine |
@@ -170,6 +171,7 @@ Robotics Project/
 | D09 | LQR solver | Continuous ARE (`scipy.linalg.solve_continuous_are`) |
 | D10 | PID derivative | Derivative-on-measurement (not on error) to avoid kick on setpoint change |
 | D11 | Run provenance | New JSON sidecars record runtime provenance and configuration snapshots |
+| D12 | Repository publication | Public GitHub repository with `main` tracking `origin/main` |
 
 ---
 
@@ -282,6 +284,12 @@ max_torque_total: 10.0
 - Made the linear-model simulation extract its 1-element control result with `.item()`, avoiding a NumPy 2.x scalar-conversion deprecation.
 - Newly generated JSON metadata now records the Git commit, Python version, optional PyBullet version, timezone-aware timestamp, seed, and a robot/simulation/controller/disturbance config snapshot.
 - **Validation:** `python3 -m pytest tests/ -v` → **50/50 PASS** using miniforge3 Python 3.12.12.
+- **Local commit:** `c96182c` — `fix: restore imports and add run provenance`.
+
+### ✅ Repository Publication (2026-11-16)
+- Created the public GitHub repository: https://github.com/saiuppalapati011/self-balancing-two-wheel-robot
+- Added it as `origin` and pushed the complete existing Git history, all tracked source files, experiment data, report figures, and documentation.
+- Verified that `main` tracks `origin/main` at commit `c96182c4684d03cb397689a6aaef94b98ef97c53` and that the local working tree was clean after the push.
 
 ### 🔲 Phase 3 — Report & Analysis Write-up (NEXT)
 - Write `report/report.md` (or LaTeX) with methods, results, figures
@@ -296,7 +304,7 @@ max_torque_total: 10.0
 ## 9. How to Continue (New Agent Checklist)
 
 1. **Read this file** (`docs/context.md`) in full.
-2. Run `git log --oneline` to see latest commits and tags.
+2. Run `git log --oneline` and `git status --short --branch` to see latest commits, tags, and upstream status.
 3. Run `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -v` — should be **47 passed**.
 4. All 6 experiments already ran — results in `results/data/E01/` through `results/data/E06/`
 5. Report figures already in `report/figures/` (12 PNGs)
@@ -316,4 +324,4 @@ max_torque_total: 10.0
 
 ---
 
-*Last updated: 2026-11-16 — Phase 2 results retained; import, documentation, and future-run provenance verified. Phase 3 is next.*
+*Last updated: 2026-11-16 — Phase 2 results retained; import, documentation, provenance, and public GitHub publication verified. Phase 3 is next.*

@@ -125,3 +125,16 @@ Also added (scaffold agent):
 
 ### Note
 Existing Phase 2 CSVs and JSON sidecars were deliberately retained unchanged as historical evidence. JSON produced by new runs has the expanded provenance fields.
+
+---
+
+## Repository Publication (2026-11-16) ✅
+
+### Completed
+- Created the public repository https://github.com/saiuppalapati011/self-balancing-two-wheel-robot.
+- Configured it as `origin` and pushed the complete local Git history and all tracked project files.
+- Published commit `c96182c` (`fix: restore imports and add run provenance`) to `main`.
+
+### Verification
+- `main` tracks `origin/main`.
+- Remote `main` resolved to `c96182c4684d03cb397689a6aaef94b98ef97c53` immediately after the push.

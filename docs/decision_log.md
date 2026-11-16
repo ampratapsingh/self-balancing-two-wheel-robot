@@ -56,3 +56,11 @@ time, seed, and a configuration snapshot to every newly saved JSON sidecar.
 configuration that produced a run. The original Phase 2 JSONs are retained unchanged as the
 historical evidence set; rerunning an experiment creates a record with the expanded fields.
 **Impact:** CSV schemas and previously generated experiment files are unchanged.
+
+### D12: Publish the complete project history in a public GitHub repository
+**Decision:** Publish this repository at
+https://github.com/saiuppalapati011/self-balancing-two-wheel-robot and use it as `origin`.
+**Rationale:** The project needs a shareable, versioned location for course review and continuing
+Phase 3 work. Keeping the existing history preserves the provenance of the Phase 0–2 milestones.
+**Impact:** `main` tracks `origin/main`; future completed work should be committed and pushed to
+the same repository.

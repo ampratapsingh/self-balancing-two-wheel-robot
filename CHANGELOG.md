@@ -10,6 +10,7 @@ All notable changes to this project are documented here.
 
 ### Added
 - Provenance and configuration snapshots to JSON metadata written by newly generated runs.
+- Public project repository: https://github.com/saiuppalapati011/self-balancing-two-wheel-robot
 
 ## [0.1.0] - 2026-11-16
 ### Added
