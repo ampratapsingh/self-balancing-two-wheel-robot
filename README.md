@@ -5,15 +5,22 @@ implements and compares a tilt-based PID controller with a full-state LQR
 controller, then saves raw telemetry, metrics, tables, and report figures for
 six repeatable experiments.
 
-## Current status
+## Start here
 
-The implementation is functionally complete and its full test suite covers
-configuration, modelling, controllers, sensors, simulation, PyBullet physics,
-robot torque control, analysis, and end-to-end 30-second balance runs.
+The simulation is functional and verified: compilation succeeds, all 50 tests
+pass, the public command-line interfaces load, report assets regenerate from
+saved CSV evidence, and the PyBullet URDF inspection confirms the intended
+2.5 kg total robot mass.
 
-The remaining coursework tasks are editorial: replace the report front matter
-and verified bibliography placeholders, then format and inspect the final
-DOCX/PDF. See `docs/context.md` for the complete handoff state.
+Before making changes, read these documents in order:
+
+1. [`docs/team_handoff.md`](docs/team_handoff.md) — concise runbook for the next team member.
+2. [`docs/context.md`](docs/context.md) — architecture, configurations, evidence, and decisions.
+3. [`docs/progress_log.md`](docs/progress_log.md) — completed work and remaining faculty deliverables.
+
+The faculty submission is P09, Group G01, Batch B1. The technical project is
+complete; the remaining work is the faculty-formatted report, slides, team
+video, and group-specific appendices.
 
 ## Requirements
 
@@ -31,14 +38,15 @@ python -m pip install pytest pytest-timeout
 On the original development machine, the verified interpreter is
 `/Users/saiuppalapati/miniforge3/bin/python3` (Python 3.12.12).
 
-## Verify the project
+## Install and verify
 
 ```bash
 make PYTHON=/path/to/python test-all
 ```
 
-This runs all 50 tests, including PyBullet integration tests. To run only
-fast tests, use `make PYTHON=/path/to/python test`.
+This runs all 50 tests, including PyBullet integration tests. To run the
+faster subset, use `make PYTHON=/path/to/python test` (45 passed and 5 slow
+tests deselected).
 
 ## Run the simulator
 
@@ -60,25 +68,41 @@ YAML files:
 python scripts/run_simulation.py --controller lqr --headless --config-dir config
 ```
 
-## Reproduce experiments and report assets
+## Use the saved evidence safely
 
 ```bash
-# Run E01–E06 and write raw data below results/data/
+# Regenerate tables and figures from the committed raw evidence. This is safe.
+python scripts/generate_phase3_assets.py
+
+# Run E01–E06 and overwrite raw data below results/data/.
+# Do this only when intentionally producing a new, documented evidence set.
 python scripts/run_experiments.py --all
 
 # Run only the PID-versus-LQR comparison (E04)
 python scripts/compare_controllers.py --duration 20 --seed 42
 
-# Regenerate the report’s evidence tables and figures from saved raw CSVs
-python scripts/generate_phase3_assets.py
-
-# Regenerate generic time-series report figures from raw telemetry only
+# Regenerate the report’s evidence tables and figures from raw CSVs
 make PYTHON=/path/to/python plots
 ```
 
 Experiment definitions are in `config/experiments/`; raw evidence is in
 `results/data/`; generated tables are in `results/tables/`; and the report
 draft is `report/report.md`.
+
+Do not reuse the pre-correction claims that PID failed from 15° initial tilt.
+The current 2.5 kg URDF evidence is authoritative: both controllers succeed
+through the largest tested 30° initial tilt.
+
+## Faculty deliverables still owned by the group
+
+- A 25–35 page report rebuilt in the supplied faculty sample format.
+- Contribution and writing-allocation tables based on actual team work.
+- One 5–8 line co-learning reflection per member, meeting log, and peer sheets.
+- A maximum-17-slide presentation PDF and an 18–22 minute unlisted team video.
+- Verified bibliography entries and the final report PDF for submission.
+
+The repository deliberately does not invent these team-specific details. See
+the handoff guide for the exact files and completion checklist.
 
 ## Results at a glance
 

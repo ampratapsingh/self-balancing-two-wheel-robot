@@ -3,7 +3,7 @@
 > picking up this project mid-way. Read this before touching any code.
 > Keep it updated whenever a phase completes or a major decision is made.
 >
-> **Last updated:** 2026-11-16 — Phase 3 report-and-analysis implementation is in progress.
+> **Last updated:** 2026-11-16 — verified handoff package and faculty submission requirements are documented.
 
 ---
 
@@ -51,8 +51,7 @@ run 6 experiments (E01–E06), generate plots, and produce a university report.
 /Users/saiuppalapati/miniforge3/bin/python3   # Python 3.12.12
 
 # Installed packages (miniforge3 env):
-# numpy, scipy, matplotlib, pandas, pyyaml, pytest — ALL INSTALLED ✅
-# pybullet — NOT YET INSTALLED (needs C compiler or pre-built wheel)
+# numpy, scipy, matplotlib, pandas, pyyaml, pytest, pybullet — ALL INSTALLED ✅
 
 # Install the package (editable, no deps):
 cd "/Users/saiuppalapati/Downloads/Robotics Project"
@@ -166,8 +165,8 @@ Robotics Project/
     ├── test_sensors.py              # ✅ 7 PASS
     ├── test_metrics.py              # ✅ 5 PASS
     ├── test_io_and_plots.py         # ✅ 4 PASS
-    ├── test_robot.py                # ✅ 2 PASS (placeholder)
-    ├── test_physics.py              # ✅ 2 PASS (placeholder)
+    ├── test_robot.py                # ✅ URDF joint, torque, and mass checks
+    ├── test_physics.py              # ✅ DIRECT world setup and stepping checks
     └── test_integration_balance.py  # 🔲 @slow — needs pybullet installed
 ```
 
@@ -237,7 +236,7 @@ B = [[0], [18.132], [0], [-83.027]]
 
 ### PID (`config/pid_config.yaml`)
 ```yaml
-Kp: 35.0  Ki: 0.5  Kd: 2.5
+Kp: 130.0  Ki: 0.3  Kd: 8.0
 integral_clamp: 10.0
 derivative_filter_alpha: 0.7
 max_torque_total: 10.0
@@ -331,7 +330,7 @@ max_torque_total: 10.0
 3. Run `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -v` — should be **45 passed, 5 deselected**. Run the full suite for all **50 passed** checks.
 4. All 6 experiments already ran — results in `results/data/E01/` through `results/data/E06/`
 5. Report figures already in `report/figures/` (12 PNGs)
-6. Continue Phase 3: complete submission placeholders, create the final formatted document, and perform the PDF checklist inspection.
+6. Follow `docs/team_handoff.md` for the safe verification workflow and the remaining faculty submission package.
 
 ---
 
@@ -347,4 +346,4 @@ max_torque_total: 10.0
 
 ---
 
-*Last updated: 2026-11-16 — Phase 3 report draft, reproducible result assets, and corrected E04/E06 data are available; final document production remains.*
+*Last updated: 2026-11-16 — 50-test validation, corrected 2.5 kg evidence, faculty submission requirements, and teammate handoff instructions are available; final faculty-format document production remains.*

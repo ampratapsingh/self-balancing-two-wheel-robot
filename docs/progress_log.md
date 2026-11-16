@@ -199,3 +199,8 @@ Existing Phase 2 CSVs and JSON sidecars were deliberately retained unchanged as 
 - The final report must follow the supplied sample on A4 paper with a page border, Times New Roman 12 pt body text, 1.5 line spacing, mandatory front matter, indexed figures/tables, and 25–35 total pages.
 - Mandatory report content includes Novelty, Contribution, individual Co-learning Reflections, at least eight IEEE references, meeting log, peer-assessment sheets, GitHub link, and unlisted YouTube video link.
 - The faculty deadline stated in the instruction sheet is 29 October 2026. The report draft will be rebuilt from the sample template once the group provides its contribution, writing-allocation, meeting, reflection, peer-assessment, and video details.
+
+### Team handoff readiness
+- Added `docs/team_handoff.md` and expanded the root README with verified commands, evidence-handling rules, current facts, and the remaining faculty submission checklist.
+- Revalidated compilation, all public CLI help paths, report-asset generation, URDF mass/CoM inspection, and the full test suite before handoff.
+- Current handoff validation: **50 passed**; all generated assets reproduce from the committed raw CSV evidence.
