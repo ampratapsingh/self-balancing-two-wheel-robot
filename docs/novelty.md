@@ -6,7 +6,8 @@ This project goes beyond a standard textbook PID inverted-pendulum demonstration
 The contributions listed here are **claimed only where supported by experimental data**.
 Each contribution references the specific result, figure, or table that supports it.
 
-> **NOTE:** Contributions marked [PENDING DATA] have been implemented but require the corresponding experiment to complete before final claims can be made. The team must remove this marker and add specific result references before submission.
+> **NOTE:** The claims below are limited to the saved simulation evidence. Verify all reference
+> entries marked `[VERIFY]` in the literature review before final submission.
 
 ---
 
@@ -22,8 +23,9 @@ Most textbook examples demonstrate one controller. This project implements both,
 Experiments E02 (PID nominal), E03 (LQR nominal), E04 (head-to-head comparison at multiple initial tilts).
 
 **Supporting results:**
-- Table: `results/tables/E04_comparison_table.csv` [PENDING DATA]
-- Figure: `results/plots/fig_05_pid_vs_lqr_overlay.png` [PENDING DATA]
+- Table: `results/tables/E04_comparison_table.csv`
+- Figure: `report/figures/E04_tilt.png` (matched 10° comparison)
+- Result: PID fails at 15° after 9.650772 s; LQR completes the 15° run.
 
 **Limitations:**
 - Comparison is in simulation only; real hardware would show additional differences due to sensor noise, motor dynamics, and actuation delays.
@@ -43,8 +45,9 @@ Standard demonstrations use a single small initial tilt. This contribution maps 
 Experiment E06: 12 tilt angles × 2 controllers = 24 runs.
 
 **Supporting results:**
-- Figure: `results/plots/fig_07_tilt_sweep_map.png` [PENDING DATA]
-- Table: `results/tables/E06_tilt_sweep.csv` [PENDING DATA]
+- Figure: `report/figures/E06_tilt.png`
+- Table: `results/tables/E06_tilt_sweep.csv`
+- Result: PID succeeds through 12° and fails from 15° onward; LQR succeeds at every tested angle through 30°.
 
 **Limitations:**
 - 2D sweep only (no initial velocity or position offset).
@@ -64,8 +67,9 @@ Most demos balance from rest. This experiment tests robustness to unexpected ext
 Experiment E05: 10 N forward impulse at t=5s, 0.1s duration, applied at height 0.3m. Both controllers.
 
 **Supporting results:**
-- Figure: `results/plots/fig_06_disturbance_recovery.png` [PENDING DATA]
-- Table: `results/tables/E05_disturbance_metrics.csv` [PENDING DATA]
+- Figure: `report/figures/E05_tilt.png`
+- Table: `results/tables/E05_disturbance_metrics.csv`
+- Result: both controllers remain upright; their measured tilt and position trade-offs are reported in the table.
 
 **Limitations:**
 - Single disturbance magnitude tested in the primary experiment (10 N). The optional E07 sweeps magnitudes.
@@ -73,21 +77,11 @@ Experiment E05: 10 N forward impulse at t=5s, 0.1s duration, applied at height 0
 
 ---
 
-## Contribution 4: Linear-Model vs PyBullet Validation (Model Mismatch Analysis)
+## Future Work: Linear-Model vs PyBullet Mismatch Analysis
 
-**What was done:**
-The linearised state-space model (computed analytically from the Lagrangian) was used to predict the open-loop fall trajectory and the LQR closed-loop response. These predictions were compared with the actual PyBullet simulation results.
-
-**How it differs from basic implementation:**
-Most projects use the linear model only to design the controller and do not quantify the gap between the model and the simulator. This contribution explicitly measures and explains the mismatch.
-
-**How it was tested:**
-- Open-loop: Experiment E01 (fall time recorded; linear model predicts `t ∝ 1/λ_unstable`).
-- Closed-loop: overlay of linear-model LQR simulation vs PyBullet LQR simulation at same initial conditions.
-
-**Supporting results:**
-- Figure: `results/plots/fig_model_vs_pybullet.png` [PENDING DATA — optional E10]
-- Discussion in `docs/mathematical_model.md` Section 6
+**Status:** Not claimed as a completed contribution. The project uses the linear model to design
+LQR and E01 confirms physical open-loop falling, but it does not yet contain a saved quantitative
+linear-versus-PyBullet overlay. Add that experiment before claiming a mismatch measurement.
 
 **Limitations:**
 - Linear model is valid only for small angles; mismatch grows with tilt amplitude.
@@ -107,8 +101,9 @@ Tilt-only PID drift is a known limitation, but most projects do not measure it q
 Experiments E02 and E03 (30s runs): `x_m` column in CSVs.
 
 **Supporting results:**
-- Figure: `results/plots/fig_08_position_drift.png` [PENDING DATA]
-- Metrics: `final_x_m`, `peak_x_m` in comparison table [PENDING DATA]
+- Figure: `report/figures/E02_E03_position_drift.png`
+- Metrics: `results/tables/E02_E03_nominal_comparison.csv`
+- Result: nominal PID final position is 75.630257 m versus 1.360425 m for LQR.
 
 **Limitations:**
 - LQR position regulation is linear and may not hold for large deviations.

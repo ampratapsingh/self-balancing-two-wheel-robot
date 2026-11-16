@@ -64,3 +64,11 @@ https://github.com/saiuppalapati011/self-balancing-two-wheel-robot and use it as
 Phase 3 work. Keeping the existing history preserves the provenance of the Phase 0–2 milestones.
 **Impact:** `main` tracks `origin/main`; future completed work should be committed and pushed to
 the same repository.
+
+### D13: Generate report evidence from saved CSVs rather than transcribing values
+**Decision:** Use `scripts/generate_phase3_assets.py` to create Phase 3 summary tables and report
+figures from the experiment CSVs.
+**Rationale:** Manual transcription risks inconsistent metrics and untraceable claims. The script
+uses the fixed `compute_metrics` definitions and can be rerun after corrected or new experiments.
+**Impact:** The report draft cites generated tables; E04 and E06 were rerun after correcting the
+fall-row torque logging defect so their saved peak-torque values are accurate.

@@ -138,3 +138,31 @@ Existing Phase 2 CSVs and JSON sidecars were deliberately retained unchanged as 
 ### Verification
 - `main` tracks `origin/main`.
 - Remote `main` resolved to `c96182c4684d03cb397689a6aaef94b98ef97c53` immediately after the push.
+
+---
+
+## Phase 3 — Report and Analysis Assets (2026-11-16) 🟡
+
+### Completed
+- Identified and fixed a failed-run logging edge case: the final fall row stored total torque as a per-wheel value, doubling reported peak torque for failed runs.
+- Reran E04 and E06 after the fix. Failed PID rows now report the configured 10 Nm total torque limit correctly.
+- Added `scripts/generate_phase3_assets.py`, which derives report tables and comparison figures from the saved CSV evidence.
+- Generated `E01_uncontrolled_metrics.csv`, `E02_E03_nominal_comparison.csv`, `E04_comparison_table.csv`, `E05_disturbance_metrics.csv`, and `E06_tilt_sweep.csv` under `results/tables/`.
+- Added `report/report.md`, an evidence-based report draft that cites the generated assets and explicitly flags remaining submission placeholders.
+- Regenerated report figures, including PID/LQR position drift, E04 matched comparison, E05 disturbance response, and the E06 success map.
+- Corrected the tilt-sweep plotting helper to sort numerical tilt values before joining points; this prevents lexicographic filename order from producing a misleading E06 map.
+
+### Evidence-based findings
+- PID succeeds through 12° initial tilt and fails at 15° and above; LQR succeeds at every tested tilt through 30°.
+- Both controllers remain upright in the nominal 30 s run, but neither meets the strict ±0.5° settling definition for the full remaining duration.
+- PID has lower nominal RMS tilt but large position drift; the selected LQR limits drift but has persistent tilt offset in PyBullet.
+- Both remain upright after the 10 N disturbance, but their tilt and position trade-offs differ. See `results/tables/E05_disturbance_metrics.csv`.
+
+### Validation
+- `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -v` → **50 passed** ✅
+- Regenerated table/figure assets from saved results and checked the expected five tables, 24 E06 records, and corrected 10 Nm failed-run peak torque ✅
+
+### Remaining for formal submission
+- Replace report front-matter and syllabus placeholders.
+- Verify bibliography entries marked `[VERIFY]` and replace the placeholder recent-paper reference.
+- Produce and visually inspect the final formatted DOCX/PDF against `report/format_checklist.md`.

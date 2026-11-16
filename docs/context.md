@@ -3,7 +3,7 @@
 > picking up this project mid-way. Read this before touching any code.
 > Keep it updated whenever a phase completes or a major decision is made.
 >
-> **Last updated:** 2026-11-16 — Phase 2 complete; integrity/provenance maintenance and public GitHub publication complete; Phase 3 next.
+> **Last updated:** 2026-11-16 — Phase 3 report-and-analysis implementation is in progress.
 
 ---
 
@@ -291,13 +291,15 @@ max_torque_total: 10.0
 - Added it as `origin` and pushed the complete existing Git history, all tracked source files, experiment data, report figures, and documentation.
 - Verified that `main` tracks `origin/main` at commit `c96182c4684d03cb397689a6aaef94b98ef97c53` and that the local working tree was clean after the push.
 
-### 🔲 Phase 3 — Report & Analysis Write-up (NEXT)
-- Write `report/report.md` (or LaTeX) with methods, results, figures
-- Summary tables comparing PID vs LQR metrics (RMS tilt, max torque, settling time)
-- Run `scripts/tune_pid.py` for more systematic PID tuning (optional)
-- Run `scripts/sweep_lqr_qr.py` for LQR Q/R sweep (optional)
-- Slow integration tests: `python3 -m pytest tests/test_integration_balance.py -v`
-- Update `CHANGELOG.md` with Phase 2/3 entries
+### 🟡 Phase 3 — Report & Analysis Write-up (IN PROGRESS)
+- `report/report.md`: evidence-based report draft written, with explicit submission placeholders ✅
+- `scripts/generate_phase3_assets.py`: reproducibly generates tables and report figures from saved CSVs ✅
+- `results/tables/`: E01, nominal E02/E03, E04, E05, and E06 tables generated ✅
+- Report figures: comparison, disturbance, tilt-sweep, and position-drift visuals regenerated ✅
+- Corrected a failed-run torque logging issue, then reran E04 and E06 to preserve correct torque metrics ✅
+- **Validation:** full test suite remains **50/50 PASS** ✅
+- Before formal submission: fill front matter/syllabus mapping, verify marked references, format/export a DOCX or PDF, and inspect the final PDF 🔲
+- Optional research extensions: systematic PID tuning and LQR Q/R sweep 🔲
 
 ---
 
@@ -308,7 +310,7 @@ max_torque_total: 10.0
 3. Run `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -v` — should be **47 passed**.
 4. All 6 experiments already ran — results in `results/data/E01/` through `results/data/E06/`
 5. Report figures already in `report/figures/` (12 PNGs)
-6. **Next: Phase 3** — write report, compute summary metrics, fill `report/tables/`
+6. Continue Phase 3: complete submission placeholders, create the final formatted document, and perform the PDF checklist inspection.
 
 ---
 
@@ -318,10 +320,11 @@ max_torque_total: 10.0
 |---|---|---|
 | PID basin of attraction | Fails ≥15° initial tilt with Kp=130 | Expected — nonlinear regime |
 | LQR position drift | Robot slowly rolls away (q_x=1 helps but doesn't fully stop) | Acceptable for balancing task |
+| LQR steady-state tilt | Current PyBullet LQR runs do not meet the ±0.5° settling criterion despite remaining upright | Report as measured; tune Q/R before claiming better tilt regulation |
 | Historical JSON provenance | Phase 2 JSON files were saved before provenance expansion and lack runtime/config snapshots | Preserve as historical evidence; rerun an experiment to create an expanded JSON record |
 | System Python | Use miniforge3 only, not `python3` | Known |
 | front_marker_link inertia | PyBullet warns about no inertial data for this link | Harmless |
 
 ---
 
-*Last updated: 2026-11-16 — Phase 2 results retained; import, documentation, provenance, and public GitHub publication verified. Phase 3 is next.*
+*Last updated: 2026-11-16 — Phase 3 report draft, reproducible result assets, and corrected E04/E06 data are available; final document production remains.*

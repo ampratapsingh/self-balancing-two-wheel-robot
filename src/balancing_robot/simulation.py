@@ -174,7 +174,11 @@ class Simulation:
                 fell = True
                 result.fall_time = t
                 # Record this step and break
-                self._record_row(result, state, t, tau_cmd, 0.0, status)
+                # _record_row stores a command per wheel.  At a fall we have not
+                # applied a new command this step, so record the held total command
+                # using the same left/right split as normal control steps.
+                tau_per_wheel = tau_cmd / 2.0 if self.controller else 0.0
+                self._record_row(result, state, t, tau_per_wheel, 0.0, status)
                 break
 
             # Controller update (at controller rate)

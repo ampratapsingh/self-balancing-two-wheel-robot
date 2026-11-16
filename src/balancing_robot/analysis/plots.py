@@ -114,7 +114,10 @@ def plot_tilt_sweep_map(
     fig, ax = plt.subplots(figsize=(10, 5))
     controllers = sorted(set(r["controller"] for r in results))
     for ctrl in controllers:
-        ctrl_results = [r for r in results if r["controller"] == ctrl]
+        ctrl_results = sorted(
+            (r for r in results if r["controller"] == ctrl),
+            key=lambda result: float(result["initial_tilt_deg"]),
+        )
         tilts = [r["initial_tilt_deg"] for r in ctrl_results]
         successes = [1 if r["success"] else 0 for r in ctrl_results]
         color = _get_color(ctrl)

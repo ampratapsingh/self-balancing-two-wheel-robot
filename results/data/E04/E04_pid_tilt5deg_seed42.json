@@ -5,6 +5,77 @@
   "controller": "PID",
   "n_steps": 4799,
   "fell": false,
-  "saved_at": "2026-11-16T13:32:07.135005",
+  "seed": 42,
+  "config_snapshot": {
+    "robot": {
+      "wheel": {
+        "radius": 0.08,
+        "width": 0.035,
+        "mass": 0.25,
+        "color": [
+          0.1,
+          0.1,
+          0.9,
+          1.0
+        ]
+      },
+      "chassis": {
+        "height": 0.45,
+        "width": 0.2,
+        "depth": 0.12,
+        "mass": 2.0,
+        "color": [
+          0.8,
+          0.2,
+          0.2,
+          1.0
+        ]
+      },
+      "gravity": 9.81,
+      "timestep": 0.004167,
+      "wheel_friction": {
+        "lateral": 0.8,
+        "rolling": 0.001,
+        "spinning": 0.001
+      },
+      "max_torque_per_wheel": 5.0,
+      "wheel_joint_damping": 0.01,
+      "urdf_path": "assets/robot/balancing_robot.urdf"
+    },
+    "simulation": {
+      "physics": {
+        "timestep": 0.004167,
+        "gravity": -9.81,
+        "num_solver_iterations": 50,
+        "num_sub_steps": 1,
+        "use_split_impulse": true,
+        "split_impulse_threshold": -0.02
+      },
+      "controller_rate_hz": 240,
+      "camera": {
+        "distance": 1.5,
+        "yaw": 45.0,
+        "pitch": -20.0
+      },
+      "initial_tilt_deg": 3.0,
+      "fall_threshold_deg": 45.0,
+      "real_time_pacing": false,
+      "seed": 42
+    },
+    "controller": {
+      "Kp": 130.0,
+      "Ki": 0.3,
+      "Kd": 8.0,
+      "integral_clamp": 10.0,
+      "derivative_filter_alpha": 0.7,
+      "max_torque_total": 10.0,
+      "theta_ref": 0.0
+    },
+    "disturbance": null
+  },
+  "git_commit": "45b42e14f52e1369bfdc78a250039a41dc0843d8",
+  "python_version": "3.12.12",
+  "pybullet_version": 202010061,
+  "saved_at": "2026-11-16T19:24:22.009291+05:30",
   "csv_file": "/Users/saiuppalapati/Downloads/Robotics Project/results/data/E04/E04_pid_tilt5deg_seed42.csv"
 }

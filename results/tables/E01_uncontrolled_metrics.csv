@@ -1,0 +1,2 @@
+experiment_id,controller,initial_tilt_deg,success,fall_time_s,max_abs_tilt_deg,settling_time_s,ss_tilt_error_deg,rms_tilt_rad,peak_torque_Nm,rms_torque_Nm,final_x_m,peak_x_m
+E01,NONE,2.000000,False,1.112589,45.397565,,13.969435,0.324315,0.000000,0.000000,0.165578,0.165578
