@@ -101,8 +101,10 @@ class PIDController(BaseController):
         self._prev_theta = theta
 
         # Apply IIR low-pass filter to derivative
+        # alpha=1.0 means no filtering (pass through raw); alpha=0.0 means freeze.
+        # filtered = (1-alpha)*prev + alpha*raw
         alpha = self.derivative_filter_alpha
-        self._deriv_filtered = alpha * self._deriv_filtered + (1.0 - alpha) * raw_deriv
+        self._deriv_filtered = (1.0 - alpha) * self._deriv_filtered + alpha * raw_deriv
 
         # Derivative term: negative because derivative-on-measurement;
         # when theta is increasing (falling forward), raw_deriv > 0,

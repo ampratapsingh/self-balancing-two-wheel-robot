@@ -105,7 +105,7 @@ class LQRController(BaseController):
             state["theta_dot"],
         ])
 
-        u = float(-self._K @ x_vec)
+        u = float((-self._K @ x_vec).item())
         u = max(-self.max_torque_total, min(self.max_torque_total, u))
 
         logger.debug(
