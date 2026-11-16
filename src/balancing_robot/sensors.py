@@ -59,8 +59,8 @@ class Sensors:
         noise_std_theta_dot: Gaussian std dev for tilt-rate noise (rad/s). 0 = disabled.
         delay_steps: Number of physics steps to delay sensor readings. 0 = no delay.
         lpf_alpha: Low-pass filter coefficient for tilt rate.
-            filtered = alpha * prev + (1-alpha) * raw.
-            0.0 = no filtering (pass through raw); 1.0 = full smoothing (freeze).
+            filtered = (1-alpha) * prev + alpha * raw.
+            1.0 = no filtering (pass through raw); 0.0 = full smoothing (freeze).
         rng: Optional numpy random generator for deterministic noise.
     """
 

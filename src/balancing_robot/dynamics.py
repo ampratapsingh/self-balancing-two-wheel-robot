@@ -205,7 +205,8 @@ def simulate_linear_model(
     for i in range(n_steps):
         x = states[i]
         if K is not None:
-            u = float(-K @ x)
+            # K @ x has shape (1,); extract its scalar explicitly for NumPy 2.x.
+            u = float((-K @ x).item())
             u = np.clip(u, -max_torque, max_torque)
         else:
             u = 0.0

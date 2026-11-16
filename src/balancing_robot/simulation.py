@@ -77,6 +77,7 @@ class Simulation:
         seed: int = 42,
         disturbance_cfg: dict | None = None,
         urdf_path: str | None = None,
+        controller_cfg: dict[str, Any] | None = None,
     ) -> None:
         self.sim_cfg = sim_cfg
         self.robot_cfg = robot_cfg
@@ -88,6 +89,7 @@ class Simulation:
         self.run_id = run_id
         self.seed = seed
         self.disturbance_cfg = disturbance_cfg
+        self.controller_cfg = controller_cfg
 
         self.fall_threshold_rad = math.radians(
             float(sim_cfg.get("fall_threshold_deg", 45.0))
@@ -216,6 +218,13 @@ class Simulation:
             "controller": self.controller.name if self.controller else "none",
             "n_steps": n_steps,
             "fell": fell,
+            "seed": self.seed,
+            "config_snapshot": {
+                "robot": self.robot_cfg,
+                "simulation": self.sim_cfg,
+                "controller": self.controller_cfg,
+                "disturbance": self.disturbance_cfg,
+            },
         }
         logger.info(
             "Simulation done: success=%s fall_time=%s controller=%s",

@@ -3,7 +3,7 @@
 > picking up this project mid-way. Read this before touching any code.
 > Keep it updated whenever a phase completes or a major decision is made.
 >
-> **Last updated:** 2026-11-16 — Phase 2 COMPLETE (all 6 experiments run, tag v0.3.0).
+> **Last updated:** 2026-11-16 — Phase 2 complete; integrity and provenance maintenance complete; Phase 3 next.
 
 ---
 
@@ -48,7 +48,7 @@ cd "/Users/saiuppalapati/Downloads/Robotics Project"
 # Run fast tests (47 pass, 3 deselected as @slow):
 /Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -v
 
-# Run all tests including integration (needs pybullet):
+# Run all tests including integration (50 pass; needs pybullet):
 /Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -v
 ```
 
@@ -169,6 +169,7 @@ Robotics Project/
 | D08 | LQR bug fix | `(-K @ x).item()` — K is (1,4), result is (1,) not scalar |
 | D09 | LQR solver | Continuous ARE (`scipy.linalg.solve_continuous_are`) |
 | D10 | PID derivative | Derivative-on-measurement (not on error) to avoid kick on setpoint change |
+| D11 | Run provenance | New JSON sidecars record runtime provenance and configuration snapshots |
 
 ---
 
@@ -275,6 +276,13 @@ max_torque_total: 10.0
 
 **Commits:** `b32a7f6` (PID fix), `8095e3a` (all experiments + figures). **Tag: v0.3.0**
 
+### ✅ Post-Phase 2 — Integrity & Provenance Maintenance (2026-11-16)
+- Restored importability after an accidental leading space at the start of `sensors.py` caused an `IndentationError` during test collection.
+- Corrected stale PID and sensor filter-convention documentation to match the implemented sign and low-pass-filter conventions.
+- Made the linear-model simulation extract its 1-element control result with `.item()`, avoiding a NumPy 2.x scalar-conversion deprecation.
+- Newly generated JSON metadata now records the Git commit, Python version, optional PyBullet version, timezone-aware timestamp, seed, and a robot/simulation/controller/disturbance config snapshot.
+- **Validation:** `python3 -m pytest tests/ -v` → **50/50 PASS** using miniforge3 Python 3.12.12.
+
 ### 🔲 Phase 3 — Report & Analysis Write-up (NEXT)
 - Write `report/report.md` (or LaTeX) with methods, results, figures
 - Summary tables comparing PID vs LQR metrics (RMS tilt, max torque, settling time)
@@ -302,10 +310,10 @@ max_torque_total: 10.0
 |---|---|---|
 | PID basin of attraction | Fails ≥15° initial tilt with Kp=130 | Expected — nonlinear regime |
 | LQR position drift | Robot slowly rolls away (q_x=1 helps but doesn't fully stop) | Acceptable for balancing task |
-| `utcnow()` deprecation | `analysis/io.py` uses deprecated datetime API | Minor warning, non-blocking |
+| Historical JSON provenance | Phase 2 JSON files were saved before provenance expansion and lack runtime/config snapshots | Preserve as historical evidence; rerun an experiment to create an expanded JSON record |
 | System Python | Use miniforge3 only, not `python3` | Known |
 | front_marker_link inertia | PyBullet warns about no inertial data for this link | Harmless |
 
 ---
 
-*Last updated: 2026-11-16 — Phase 2 complete (all 6 experiments, 12 report figures, tag v0.3.0). Phase 3 is next.*
+*Last updated: 2026-11-16 — Phase 2 results retained; import, documentation, and future-run provenance verified. Phase 3 is next.*

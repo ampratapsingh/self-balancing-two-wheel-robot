@@ -27,10 +27,12 @@ def main():
     sim_cfg = load_simulation_config()
 
     controller = None
+    controller_cfg = None
     if args.controller == "pid":
         from balancing_robot.controllers.pid import PIDController
         pid_cfg = load_pid_config()
         controller = PIDController.from_config(pid_cfg)
+        controller_cfg = pid_cfg
     elif args.controller == "lqr":
         from balancing_robot.dynamics import compute_model_params, compute_state_space
         from balancing_robot.controllers.lqr import LQRController
@@ -38,6 +40,7 @@ def main():
         params = compute_model_params(robot_cfg)
         A, B = compute_state_space(params)
         controller = LQRController.from_config(lqr_cfg, A, B)
+        controller_cfg = lqr_cfg
 
     from balancing_robot.simulation import Simulation
     from balancing_robot.analysis.io import save_run
@@ -53,6 +56,7 @@ def main():
         experiment_id="E_manual",
         run_id=f"manual_{args.controller}_seed{args.seed}",
         seed=args.seed,
+        controller_cfg=controller_cfg,
     )
     result = sim.run()
     out_dir = Path(args.output_dir) / "data" / "manual"

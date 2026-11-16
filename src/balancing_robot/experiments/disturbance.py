@@ -52,8 +52,10 @@ def run_disturbance(
     for ctrl_name in controllers_to_run:
         if ctrl_name == "pid":
             controller = PIDController.from_config(controller_cfg)
+            active_controller_cfg = controller_cfg
         else:
             controller = LQRController.from_config(lqr_cfg, A, B)
+            active_controller_cfg = lqr_cfg
 
         run_id = f"E05_{ctrl_name}_dist_seed{seed}"
         sim = Simulation(
@@ -67,6 +69,7 @@ def run_disturbance(
             run_id=run_id,
             seed=seed,
             disturbance_cfg=disturbance_cfg,
+            controller_cfg=active_controller_cfg,
         )
         result = sim.run()
         csv_path, json_path = save_run(result.rows, result.metadata, out_dir, result.run_id)

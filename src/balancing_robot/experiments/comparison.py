@@ -38,8 +38,10 @@ def run_comparison(
         for ctrl_name in controllers_to_run:
             if ctrl_name == "pid":
                 controller = PIDController.from_config(pid_cfg)
+                controller_cfg = pid_cfg
             else:
                 controller = LQRController.from_config(lqr_cfg, A, B)
+                controller_cfg = lqr_cfg
 
             run_id = f"E04_{ctrl_name}_tilt{tilt:.0f}deg_seed{seed}"
             sim = Simulation(
@@ -52,6 +54,7 @@ def run_comparison(
                 experiment_id="E04",
                 run_id=run_id,
                 seed=seed,
+                controller_cfg=controller_cfg,
             )
             result = sim.run()
             csv_path, json_path = save_run(result.rows, result.metadata, out_dir, result.run_id)

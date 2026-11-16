@@ -48,3 +48,11 @@ Yaw is ignored in Phase 1 (straight-line motion assumed).
 **Decision:** Physics and controller run at 240 Hz.  
 **Rationale:** Matches PyBullet's default and is fast enough for the dynamics without excessive
 CPU cost. Settable in `simulation_config.yaml`.
+
+### D11: Persist reproducibility provenance with each newly generated run
+**Decision:** Add the Git commit, Python version, optional PyBullet version, timezone-aware save
+time, seed, and a configuration snapshot to every newly saved JSON sidecar.
+**Rationale:** The methodology requires enough provenance to identify the exact code and
+configuration that produced a run. The original Phase 2 JSONs are retained unchanged as the
+historical evidence set; rerunning an experiment creates a record with the expanded fields.
+**Impact:** CSV schemas and previously generated experiment files are unchanged.

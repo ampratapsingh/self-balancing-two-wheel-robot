@@ -2,7 +2,7 @@
 PID controller for tilt-based balancing.
 
 Convention:
-  - error = theta_ref - theta  (default theta_ref = 0)
+  - error = theta - theta_ref  (default theta_ref = 0)
   - Positive error (forward lean, theta > 0) → positive torque output
     (drives wheels forward to bring chassis back upright)
   - Uses derivative-on-measurement (not on error) to avoid derivative kick
@@ -30,7 +30,7 @@ class PIDController(BaseController):
         theta_ref: Reference (setpoint) tilt angle (rad). Default 0 (upright).
         integral_clamp: Maximum absolute value of the integral term.
         derivative_filter_alpha: IIR filter coefficient for derivative.
-            filtered = alpha * prev + (1-alpha) * raw_derivative.
+            filtered = (1-alpha) * prev + alpha * raw_derivative.
             1.0 = no filtering.
         max_torque_total: Output saturation limit (Nm, total both wheels).
     """

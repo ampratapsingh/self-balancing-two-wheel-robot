@@ -29,6 +29,7 @@ def run_uncontrolled(
         experiment_id=exp_cfg.get("experiment_id", "E01"),
         run_id="E01_uncontrolled_seed0",
         seed=int(exp_cfg.get("seed", 42)),
+        controller_cfg=None,
     )
     result = sim.run()
 
@@ -62,6 +63,7 @@ def run_pid(
         experiment_id=exp_cfg.get("experiment_id", "E02"),
         run_id="E02_pid_seed42",
         seed=int(exp_cfg.get("seed", 42)),
+        controller_cfg=pid_cfg,
     )
     result = sim.run()
     out_dir = Path(output_dir) / "data" / "E02"
@@ -96,6 +98,7 @@ def run_lqr(
         experiment_id=exp_cfg.get("experiment_id", "E03"),
         run_id="E03_lqr_seed42",
         seed=int(exp_cfg.get("seed", 42)),
+        controller_cfg=lqr_cfg,
     )
     result = sim.run()
     out_dir = Path(output_dir) / "data" / "E03"

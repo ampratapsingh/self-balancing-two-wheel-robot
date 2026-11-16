@@ -128,13 +128,17 @@ Runs that "fail" are still reported with time-to-fall.
 
 ## 5. Reproducibility Requirements
 
-- All experiments write a metadata JSON alongside the CSV containing:
+- All runs generated from the current code write a metadata JSON alongside the CSV containing:
   - `git_commit`: current HEAD commit hash
   - `python_version`: Python version string
   - `pybullet_version`: PyBullet version
   - `seed`: random seed used
   - `config_snapshot`: copy of all relevant config values
-  - `timestamp`: UTC timestamp
+  - `saved_at`: timezone-aware ISO-8601 timestamp
+
+The Phase 2 CSVs remain the original evidence set. Their already-saved JSON files predate
+the provenance update and therefore contain only the original run fields; rerun an experiment
+to produce an expanded metadata record without altering those historical outputs.
 
 - Determinism: given the same seed and config, two runs must produce identical CSV files.
   - Verified by running the same experiment twice and diffing the CSVs.

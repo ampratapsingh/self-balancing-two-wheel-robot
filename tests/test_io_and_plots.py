@@ -51,6 +51,9 @@ def test_save_and_load_run():
         assert "tilt_rad" in df.columns
         meta = load_metadata(json_path)
         assert meta["controller"] == "pid"
+        assert meta["python_version"]
+        assert "git_commit" in meta
+        assert "saved_at" in meta
 
 
 def test_csv_has_expected_columns():

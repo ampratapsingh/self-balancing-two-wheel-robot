@@ -106,3 +106,22 @@ Also added (scaffold agent):
 - LQR significantly outperforms PID in terms of robustness (handles 30° vs 12° for PID)
 - Both controllers handle the 10N disturbance impulse successfully
 - Nonlinear effects limit PID performance but are well within the linearisation valid range for LQR
+
+---
+
+## Post-Phase 2 — Integrity & Provenance Maintenance (2026-11-16) ✅
+
+### Completed
+- Fixed an accidental leading whitespace character before the `sensors.py` module docstring. The character caused `IndentationError` during import and blocked the fast test suite at collection.
+- Updated the PID and sensor documentation to reflect the implemented `error = theta - theta_ref` sign convention and `(1-alpha)*previous + alpha*raw` filter convention.
+- Updated the linear-model control scalar conversion to use `.item()` for NumPy 2.x compatibility.
+- Expanded metadata written for future simulation runs: Git commit, Python version, optional PyBullet version, timezone-aware save time, seed, and config snapshot.
+- Added coverage that validates the new metadata fields.
+
+### Validation
+- `/Users/saiuppalapati/miniforge3/bin/python3 -m compileall -q src scripts` ✅
+- `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -m "not slow" -q` → **47 passed, 3 deselected** ✅
+- `/Users/saiuppalapati/miniforge3/bin/python3 -m pytest tests/ -v` → **50 passed** ✅
+
+### Note
+Existing Phase 2 CSVs and JSON sidecars were deliberately retained unchanged as historical evidence. JSON produced by new runs has the expanded provenance fields.
