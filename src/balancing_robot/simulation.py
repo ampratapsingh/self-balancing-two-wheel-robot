@@ -210,9 +210,11 @@ class Simulation:
             # Record data
             self._record_row(result, state, t, tau_l, dist_force_magnitude, status)
 
-            # GUI camera follow
-            if self.gui and step % 10 == 0:
-                self._update_gui(state, tau_cmd, status, t)
+            # GUI camera follow and real-time pacing
+            if self.gui:
+                if step % 10 == 0:
+                    self._update_gui(state, tau_cmd, status, t)
+                time.sleep(self.dt)
 
         result.success = not fell and (result.fall_time is None)
         result.metadata = {
@@ -234,6 +236,25 @@ class Simulation:
             "Simulation done: success=%s fall_time=%s controller=%s",
             result.success, result.fall_time, result.controller_name,
         )
+
+        if self.gui:
+            import pybullet as p
+            print("\n" + "=" * 55)
+            print(" Simulation run finished!")
+            print(" 3D GUI window is held open for inspection.")
+            print(" Rotate camera: Ctrl + Left/Right Mouse")
+            print(" Close the 3D PyBullet window (X) to finish.")
+            print("=" * 55 + "\n")
+            try:
+                while p.isConnected(physicsClientId=self._physics.client):
+                    if not fell and self.controller:
+                        state = self._sensors.get_state()
+                        tau_cmd = self.controller.compute(state, self.dt)
+                        self._robot.apply_torque(tau_cmd)
+                    self._physics.step()
+                    time.sleep(self.dt)
+            except (KeyboardInterrupt, Exception):
+                pass
 
         self._physics.disconnect()
         return result
